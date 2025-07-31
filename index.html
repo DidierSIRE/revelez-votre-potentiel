@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Révélez votre potentiel</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f9f9f9;
+      color: #222;
+    }
+    header {
+      background: linear-gradient(to right, #FFA726, #8BC34A, #42A5F5);
+      color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 2.5rem;
+    }
+    section {
+      padding: 2rem 1rem;
+      max-width: 800px;
+      margin: auto;
+    }
+    h2 {
+      color: #2E7D32;
+    }
+    .questionnaire {
+      margin-top: 2rem;
+      background-color: #fff;
+      border-radius: 8px;
+      padding: 1rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .question {
+      margin-bottom: 1.5rem;
+    }
+    button {
+      background-color: #FFA726;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #resultat {
+      margin-top: 2rem;
+      padding: 1rem;
+      background-color: #E3F2FD;
+      border-left: 5px solid #42A5F5;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>RÉVÉLEZ VOTRE POTENTIEL</h1>
+    <p>Mieux choisir. Mieux dire. Mieux être.</p>
+  </header>
+
+  <section>
+    <h2>Bienvenue</h2>
+    <p>Découvrez en quelques questions les grandes tendances de votre fonctionnement. Ce mini questionnaire s’inspire du DISC et des valeurs motivationnelles pour amorcer une réflexion sur votre profil. Résultat immédiat et sans engagement.</p>
+
+    <div class="questionnaire">
+      <div class="question">
+        <label>1. Face à un défi, vous avez tendance à :</label><br>
+        <input type="radio" name="q1" value="D"> Prendre les devants et trancher rapidement<br>
+        <input type="radio" name="q1" value="I"> Motiver les autres à suivre<br>
+        <input type="radio" name="q1" value="S"> Préserver l'équilibre du groupe<br>
+        <input type="radio" name="q1" value="C"> Réfléchir et analyser avant d’agir
+      </div>
+      <div class="question">
+        <label>2. Vous vous sentez le plus utile quand vous :</label><br>
+        <input type="radio" name="q2" value="D"> Obtenez des résultats concrets<br>
+        <input type="radio" name="q2" value="I"> Inspirez ou stimulez<br>
+        <input type="radio" name="q2" value="S"> Apportez du soutien durable<br>
+        <input type="radio" name="q2" value="C"> Améliorez la qualité ou la logique des choses
+      </div>
+      <button onclick="analyser()">Voir mon profil</button>
+      <div id="resultat"></div>
+    </div>
+  </section>
+
+  <script>
+    function analyser() {
+      const reponses = ['q1', 'q2'].map(name => {
+        const choix = document.querySelector(`input[name=${name}]:checked`);
+        return choix ? choix.value : null;
+      });
+      if (reponses.includes(null)) {
+        document.getElementById('resultat').innerHTML = '<p>Merci de répondre à toutes les questions.</p>';
+        return;
+      }
+      const compte = { D: 0, I: 0, S: 0, C: 0 };
+      reponses.forEach(r => compte[r]++);
+      const dominant = Object.entries(compte).sort((a, b) => b[1] - a[1])[0][0];
+      const profils = {
+        D: "Votre style dominant semble être orienté vers l'action, la décision et la performance.",
+        I: "Vous semblez porté par l'enthousiasme, la communication et l'inspiration.",
+        S: "Vous donnez la priorité à la stabilité, l'écoute et la coopération.",
+        C: "Vous recherchez la précision, la rigueur et l’analyse structurée."
+      };
+      document.getElementById('resultat').innerHTML = '<h3>Résultat</h3><p>' + profils[dominant] + '</p>';
+    }
+  </script>
+</body>
+</html>
