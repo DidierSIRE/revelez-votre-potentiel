@@ -1,1 +1,227 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Mini Test DISC & Valeurs</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f7f9fa;
+      color: #222;
+      margin: 0;
+      padding: 2rem;
+    }
+    h1 {
+      text-align: center;
+      color: #2E7D32;
+    }
+    #question-container, #emailForm, #confirmation {
+      max-width: 700px;
+      margin: auto;
+      background: #fff;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      margin-bottom: 2rem;
+    }
+    .question-block {
+      display: none;
+      transition: transform 0.5s ease-in-out, opacity 0.3s ease-in-out;
+    }
+    .question-block.show {
+      display: block;
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .question-block.exit {
+      transform: translateX(200%);
+      opacity: 0;
+    }
+    label {
+      display: block;
+      margin: 0.5rem 0;
+    }
+    button {
+      padding: 0.8rem 1.2rem;
+      font-size: 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      display: block;
+      margin: 2rem auto 0;
+    }
+    #validateBtn:disabled {
+      background-color: #ccc;
+      color: #666;
+      border: none;
+    }
+    #validateBtn:enabled {
+      background-color: #FFA726;
+      color: white;
+      border: none;
+    }
+    input[type="email"], select, textarea {
+      width: 100%;
+      padding: 0.5rem;
+      margin-top: 0.3rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+  </style>
+</head>
+<body>
 
+<h1>Mini Test DISC & Valeurs</h1>
+
+<div id="question-container"></div>
+
+<button id="validateBtn" disabled>Valider mes réponses</button>
+
+<form id="emailForm" style="display:none;">
+  <label for="email">Votre adresse email :</label>
+  <input type="email" id="email" name="email" required>
+
+  <label for="objectif">Dans quel but réalisez-vous cette évaluation ?</label>
+  <select id="objectif" name="objectif" required onchange="checkAutre(this.value)">
+    <option value="">-- Choisissez une option --</option>
+    <option value="orientation">Choisir une orientation ou une voie professionnelle</option>
+    <option value="entretien">Préparer un entretien ou un concours</option>
+    <option value="reconversion">Clarifier un projet de reconversion</option>
+    <option value="recrutement">Mieux recruter ou comprendre un collaborateur</option>
+    <option value="autre">Autre (à préciser ci-dessous)</option>
+  </select>
+
+  <label for="autre">Si “Autre”, précisez ici :</label>
+  <textarea id="autre" name="autre" placeholder="Expliquez brièvement votre situation..."></textarea>
+
+  <button type="submit">Envoyer</button>
+</form>
+
+<div id="confirmation" style="display:none;">
+  <p>Merci ! Vous recevrez votre analyse personnalisée dans un délai de 24h.</p>
+</div>
+
+<script>
+  const questions = [
+    ["Quand un projet démarre, je suis plutôt du genre à :", [
+      "M'assurer que tout est clair et structuré",
+      "Motiver les autres avec enthousiasme",
+      "Prendre les choses en main immédiatement",
+      "M'assurer que tout le monde est à l’aise avec le changement"
+    ]],
+    ["Dans une discussion tendue, je :", [
+      "Essaye de comprendre les ressentis des autres",
+      "Donne mon point de vue de façon directe",
+      "Cherche à calmer le jeu et rassurer",
+      "Me réfère aux faits pour être le plus juste possible"
+    ]],
+    ["En groupe, on me reconnaît souvent pour :", [
+      "Ma fiabilité et mon côté rassurant",
+      "Mon énergie communicative",
+      "Mon exigence et mon goût du travail bien fait",
+      "Mon esprit de décision et ma capacité à trancher"
+    ]],
+    ["Quand je suis en désaccord, j’ai tendance à :", [
+      "Argumenter calmement sans chercher à dominer",
+      "Exiger des preuves ou des justifications solides",
+      "Imposer mon point de vue",
+      "Essayer de garder une bonne ambiance"
+    ]],
+    ["Je préfère travailler dans un environnement où :", [
+      "Les procédures sont claires et respectées",
+      "Je peux influencer et inspirer les autres",
+      "Je peux progresser rapidement et prendre des décisions",
+      "L’ambiance est stable et sans tension"
+    ]],
+    ["Face à un imprévu (ex : train annulé), je :", [
+      "Cherche immédiatement une solution concrète",
+      "Rassure les autres et reste calme",
+      "Propose une alternative tout en gardant le sourire",
+      "Consulte les règles ou options officielles disponibles"
+    ]],
+    ["Lorsque je dois convaincre quelqu’un :", [
+      "J’utilise des faits, des chiffres ou des exemples précis",
+      "Je m’adapte à l’autre en douceur",
+      "Je mise sur ma force de persuasion",
+      "Je vais droit au but en affirmant ma position"
+    ]],
+    ["En situation d’examen ou d’entretien, je suis plutôt :", [
+      "Préparé et rigoureux",
+      "Souriant et naturel",
+      "Posé et détendu",
+      "Concentré et compétitif"
+    ]],
+    ["Ce qui me dérange le plus au travail, c’est :", [
+      "Le désordre ou le manque de rigueur",
+      "Le manque d’échanges ou de bonne humeur",
+      "L’indécision ou l’inaction",
+      "Les conflits ou les ambiances tendues"
+    ]],
+    ["On me dit souvent que je suis :", [
+      "Exigeant mais juste",
+      "Drôle et sociable",
+      "Calme et fiable",
+      "Organisé et précis"
+    ]]
+  ];
+
+  const container = document.getElementById('question-container');
+  const validateBtn = document.getElementById('validateBtn');
+
+  let current = 0;
+  let responses = [];
+
+  function showQuestion(index) {
+    const block = document.createElement('div');
+    block.className = 'question-block show';
+    const q = questions[index];
+    block.innerHTML = `<p><strong>${index + 1}. ${q[0]}</strong></p>`;
+    q[1].forEach((answer, i) => {
+      const id = `q${index}_a${i}`;
+      block.innerHTML += `
+        <label>
+          <input type="radio" name="q${index}" value="${answer}" onchange="nextQuestion(${index})"> ${answer}
+        </label>`;
+    });
+    container.appendChild(block);
+  }
+
+  function nextQuestion(index) {
+    const currentBlock = container.children[index];
+    currentBlock.classList.remove('show');
+    currentBlock.classList.add('exit');
+
+    if (index + 1 < questions.length) {
+      setTimeout(() => showQuestion(index + 1), 500);
+    } else {
+      validateBtn.disabled = false;
+    }
+  }
+
+  function checkAutre(value) {
+    const autre = document.getElementById('autre');
+    if (value === 'autre') {
+      autre.setAttribute('required', 'required');
+    } else {
+      autre.removeAttribute('required');
+    }
+  }
+
+  document.getElementById('validateBtn').addEventListener('click', () => {
+    document.getElementById('emailForm').style.display = 'block';
+    window.scrollTo(0, document.body.scrollHeight);
+  });
+
+  document.getElementById('emailForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    document.getElementById('confirmation').style.display = 'block';
+    this.style.display = 'none';
+  });
+
+  // Affiche la première question
+  showQuestion(0);
+</script>
+
+</body>
+</html>
