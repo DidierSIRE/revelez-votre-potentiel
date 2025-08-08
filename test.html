@@ -173,7 +173,6 @@
   const contactForm = document.getElementById('contactForm');
 
   let current = 0;
-  let responses = [];
 
   function showQuestion(index) {
     const block = document.createElement('div');
@@ -181,7 +180,6 @@
     const q = questions[index];
     block.innerHTML = `<p><strong>${index + 1}. ${q[0]}</strong></p>`;
     q[1].forEach((answer, i) => {
-      const id = `q${index}_a${i}`;
       block.innerHTML += `
         <label>
           <input type="radio" name="q${index}" value="${answer}" onchange="nextQuestion(${index})"> ${answer}
@@ -202,18 +200,37 @@
     }
   }
 
-  document.getElementById('validateBtn').addEventListener('click', () => {
+  validateBtn.addEventListener('click', () => {
     contactForm.style.display = 'block';
     window.scrollTo(0, document.body.scrollHeight);
   });
 
   contactForm.addEventListener('submit', function(e) {
     e.preventDefault();
-    document.getElementById('confirmation').style.display = 'block';
-    this.style.display = 'none';
+
+    const prenom = document.getElementById('prenom').value.trim();
+    const nom = document.getElementById('nom').value.trim();
+    const email = document.getElementById('email').value.trim();
+
+    fetch('http://127.0.0.1:5000/ajouter_contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prenom, nom, email })
+    })
+    .then(response => {
+      if (response.ok) {
+        document.getElementById('confirmation').style.display = 'block';
+        contactForm.style.display = 'none';
+      } else {
+        alert("Erreur d’enregistrement. Veuillez réessayer.");
+      }
+    })
+    .catch(error => {
+      alert("Erreur de connexion au serveur.");
+      console.error(error);
+    });
   });
 
-  // Démarrage du test
   showQuestion(0);
 </script>
 
