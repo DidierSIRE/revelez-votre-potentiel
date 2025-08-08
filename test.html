@@ -76,6 +76,17 @@
       border-radius: 4px;
       box-sizing: border-box;
     }
+    #backHomeBtn {
+      background-color: #2E7D32;
+      color: white;
+      border: none;
+      padding: 0.8rem 1.2rem;
+      font-size: 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      display: block;
+      margin: 2rem auto 0;
+    }
   </style>
 </head>
 <body>
@@ -102,128 +113,98 @@
 
 <div id="confirmation" style="display:none;">
   <p>Merci ! Vous recevrez votre mini rapport personnalisé dans un délai de 24h.</p>
+  <button id="backHomeBtn" onclick="window.location.href='index.html'">Retour à l’accueil</button>
 </div>
 
 <script>
   const questions = [
-    {
-      question: "Quand un projet démarre, je suis plutôt du genre à :",
-      options: [
-        { text: "M'assurer que tout est clair et structuré", style: "C" },
-        { text: "Motiver les autres avec enthousiasme", style: "I" },
-        { text: "Prendre les choses en main immédiatement", style: "D" },
-        { text: "M'assurer que tout le monde est à l’aise avec le changement", style: "S" }
-      ]
-    },
-    {
-      question: "Dans une discussion tendue, je :",
-      options: [
-        { text: "Essaye de comprendre les ressentis des autres", style: "S" },
-        { text: "Donne mon point de vue de façon directe", style: "D" },
-        { text: "Cherche à calmer le jeu et rassurer", style: "I" },
-        { text: "Me réfère aux faits pour être le plus juste possible", style: "C" }
-      ]
-    },
-    {
-      question: "En groupe, on me reconnaît souvent pour :",
-      options: [
-        { text: "Ma fiabilité et mon côté rassurant", style: "S" },
-        { text: "Mon énergie communicative", style: "I" },
-        { text: "Mon exigence et mon goût du travail bien fait", style: "C" },
-        { text: "Mon esprit de décision et ma capacité à trancher", style: "D" }
-      ]
-    },
-    {
-      question: "Quand je suis en désaccord, j’ai tendance à :",
-      options: [
-        { text: "Argumenter calmement sans chercher à dominer", style: "S" },
-        { text: "Exiger des preuves ou des justifications solides", style: "C" },
-        { text: "Imposer mon point de vue", style: "D" },
-        { text: "Essayer de garder une bonne ambiance", style: "I" }
-      ]
-    },
-    {
-      question: "Je préfère travailler dans un environnement où :",
-      options: [
-        { text: "Les procédures sont claires et respectées", style: "C" },
-        { text: "Je peux influencer et inspirer les autres", style: "I" },
-        { text: "Je peux progresser rapidement et prendre des décisions", style: "D" },
-        { text: "L’ambiance est stable et sans tension", style: "S" }
-      ]
-    },
-    {
-      question: "Face à un imprévu (ex : train annulé), je :",
-      options: [
-        { text: "Cherche immédiatement une solution concrète", style: "D" },
-        { text: "Rassure les autres et reste calme", style: "S" },
-        { text: "Propose une alternative tout en gardant le sourire", style: "I" },
-        { text: "Consulte les règles ou options officielles disponibles", style: "C" }
-      ]
-    },
-    {
-      question: "Lorsque je dois convaincre quelqu’un :",
-      options: [
-        { text: "J’utilise des faits, des chiffres ou des exemples précis", style: "C" },
-        { text: "Je m’adapte à l’autre en douceur", style: "S" },
-        { text: "Je mise sur ma force de persuasion", style: "I" },
-        { text: "Je vais droit au but en affirmant ma position", style: "D" }
-      ]
-    },
-    {
-      question: "En situation d’examen ou d’entretien, je suis plutôt :",
-      options: [
-        { text: "Préparé et rigoureux", style: "C" },
-        { text: "Souriant et naturel", style: "I" },
-        { text: "Posé et détendu", style: "S" },
-        { text: "Concentré et compétitif", style: "D" }
-      ]
-    },
-    {
-      question: "Ce qui me dérange le plus au travail, c’est :",
-      options: [
-        { text: "Le désordre ou le manque de rigueur", style: "C" },
-        { text: "Le manque d’échanges ou de bonne humeur", style: "I" },
-        { text: "L’indécision ou l’inaction", style: "D" },
-        { text: "Les conflits ou les ambiances tendues", style: "S" }
-      ]
-    },
-    {
-      question: "On me dit souvent que je suis :",
-      options: [
-        { text: "Exigeant mais juste", style: "D" },
-        { text: "Drôle et sociable", style: "I" },
-        { text: "Calme et fiable", style: "S" },
-        { text: "Organisé et précis", style: "C" }
-      ]
-    }
+    ["Quand un projet démarre, je suis plutôt du genre à :", [
+      "M'assurer que tout est clair et structuré",
+      "Motiver les autres avec enthousiasme",
+      "Prendre les choses en main immédiatement",
+      "M'assurer que tout le monde est à l’aise avec le changement"
+    ]],
+    ["Dans une discussion tendue, je :", [
+      "Essaye de comprendre les ressentis des autres",
+      "Donne mon point de vue de façon directe",
+      "Cherche à calmer le jeu et rassurer",
+      "Me réfère aux faits pour être le plus juste possible"
+    ]],
+    ["En groupe, on me reconnaît souvent pour :", [
+      "Ma fiabilité et mon côté rassurant",
+      "Mon énergie communicative",
+      "Mon exigence et mon goût du travail bien fait",
+      "Mon esprit de décision et ma capacité à trancher"
+    ]],
+    ["Quand je suis en désaccord, j’ai tendance à :", [
+      "Argumenter calmement sans chercher à dominer",
+      "Exiger des preuves ou des justifications solides",
+      "Imposer mon point de vue",
+      "Essayer de garder une bonne ambiance"
+    ]],
+    ["Je préfère travailler dans un environnement où :", [
+      "Les procédures sont claires et respectées",
+      "Je peux influencer et inspirer les autres",
+      "Je peux progresser rapidement et prendre des décisions",
+      "L’ambiance est stable et sans tension"
+    ]],
+    ["Face à un imprévu (ex : train annulé), je :", [
+      "Cherche immédiatement une solution concrète",
+      "Rassure les autres et reste calme",
+      "Propose une alternative tout en gardant le sourire",
+      "Consulte les règles ou options officielles disponibles"
+    ]],
+    ["Lorsque je dois convaincre quelqu’un :", [
+      "J’utilise des faits, des chiffres ou des exemples précis",
+      "Je m’adapte à l’autre en douceur",
+      "Je mise sur ma force de persuasion",
+      "Je vais droit au but en affirmant ma position"
+    ]],
+    ["En situation d’examen ou d’entretien, je suis plutôt :", [
+      "Préparé et rigoureux",
+      "Souriant et naturel",
+      "Posé et détendu",
+      "Concentré et compétitif"
+    ]],
+    ["Ce qui me dérange le plus au travail, c’est :", [
+      "Le désordre ou le manque de rigueur",
+      "Le manque d’échanges ou de bonne humeur",
+      "L’indécision ou l’inaction",
+      "Les conflits ou les ambiances tendues"
+    ]],
+    ["On me dit souvent que je suis :", [
+      "Exigeant mais juste",
+      "Drôle et sociable",
+      "Calme et fiable",
+      "Organisé et précis"
+    ]]
   ];
 
   const container = document.getElementById('question-container');
   const validateBtn = document.getElementById('validateBtn');
   const contactForm = document.getElementById('contactForm');
-  const confirmation = document.getElementById('confirmation');
-  let responses = [];
-  let currentIndex = 0;
+
+  let current = 0;
 
   function showQuestion(index) {
-    const q = questions[index];
     const block = document.createElement('div');
     block.className = 'question-block show';
-    block.innerHTML = `<p><strong>${index + 1}. ${q.question}</strong></p>`;
-    q.options.forEach((opt, i) => {
+    const q = questions[index];
+    block.innerHTML = `<p><strong>${index + 1}. ${q[0]}</strong></p>`;
+    q[1].forEach((answer, i) => {
+      const id = `q${index}_a${i}`;
       block.innerHTML += `
         <label>
-          <input type="radio" name="q${index}" value="${opt.style}" onchange="selectAnswer('${opt.style}', ${index})"> ${opt.text}
+          <input type="radio" name="q${index}" value="${answer}" onchange="nextQuestion(${index})"> ${answer}
         </label>`;
     });
     container.appendChild(block);
   }
 
-  function selectAnswer(style, index) {
-    responses[index] = style;
-    const block = container.children[index];
-    block.classList.remove('show');
-    block.classList.add('exit');
+  function nextQuestion(index) {
+    const currentBlock = container.children[index];
+    currentBlock.classList.remove('show');
+    currentBlock.classList.add('exit');
 
     if (index + 1 < questions.length) {
       setTimeout(() => showQuestion(index + 1), 500);
@@ -232,32 +213,16 @@
     }
   }
 
-  validateBtn.addEventListener('click', () => {
+  document.getElementById('validateBtn').addEventListener('click', () => {
     contactForm.style.display = 'block';
+    validateBtn.style.display = 'none';
     window.scrollTo(0, document.body.scrollHeight);
   });
 
   contactForm.addEventListener('submit', function(e) {
     e.preventDefault();
-    const prenom = document.getElementById('prenom').value;
-    const nom = document.getElementById('nom').value;
-    const email = document.getElementById('email').value;
-
-    const count = { D: 0, I: 0, S: 0, C: 0 };
-    responses.forEach(r => count[r]++);
-    const sorted = Object.entries(count).sort((a, b) => b[1] - a[1]);
-    const profil = sorted[0][0] + (sorted[1][1] > 0 ? sorted[1][0] : "");
-
-    fetch("http://127.0.0.1:5000/ajouter_contact", {
-      method: "POST",
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prenom, nom, email, profil })
-    }).then(res => {
-      contactForm.style.display = 'none';
-      confirmation.style.display = 'block';
-    }).catch(err => {
-      alert("Erreur de connexion au serveur.");
-    });
+    document.getElementById('confirmation').style.display = 'block';
+    contactForm.style.display = 'none';
   });
 
   showQuestion(0);
