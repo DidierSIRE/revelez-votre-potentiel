@@ -171,6 +171,8 @@
   const container = document.getElementById('question-container');
   const validateBtn = document.getElementById('validateBtn');
   const contactForm = document.getElementById('contactForm');
+
+  let current = 0;
   let responses = [];
 
   function showQuestion(index) {
@@ -182,14 +184,14 @@
       const id = `q${index}_a${i}`;
       block.innerHTML += `
         <label>
-          <input type="radio" name="q${index}" value="${answer}" onchange="nextQuestion(${index}, '${answer}')"> ${answer}
+          <input type="radio" name="q${index}" value="${answer}" onchange="handleAnswer(${index}, '${answer}')"> ${answer}
         </label>`;
     });
     container.appendChild(block);
   }
 
-  function nextQuestion(index, answer) {
-    responses[index] = answer;
+  function handleAnswer(index, answer) {
+    responses[index] = answer; // Enregistre la réponse
     const currentBlock = container.children[index];
     currentBlock.classList.remove('show');
     currentBlock.classList.add('exit');
@@ -206,33 +208,39 @@
     window.scrollTo(0, document.body.scrollHeight);
   });
 
-  contactForm.addEventListener('submit', function(e) {
+  contactForm.addEventListener('submit', async function(e) {
     e.preventDefault();
 
+    const prenom = document.getElementById('prenom').value.trim();
+    const nom = document.getElementById('nom').value.trim();
+    const email = document.getElementById('email').value.trim();
+
     const data = {
-      prenom: document.getElementById('prenom').value,
-      nom: document.getElementById('nom').value,
-      email: document.getElementById('email').value,
+      prenom,
+      nom,
+      email,
       reponses: responses
     };
 
-    fetch("http://127.0.0.1:5000/ajouter_contact", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data)
-    })
-    .then(response => {
-      if (response.ok) {
+    try {
+      const res = await fetch("http://127.0.0.1:5000/ajouter_contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+
+      if (res.ok) {
         document.getElementById('confirmation').style.display = 'block';
         contactForm.style.display = 'none';
       } else {
-        alert("Erreur lors de l'envoi. Merci de réessayer.");
+        alert("Erreur lors de l'envoi. Veuillez réessayer.");
       }
-    })
-    .catch(() => alert("Erreur de connexion au serveur."));
+    } catch (err) {
+      alert("Erreur de connexion au serveur.");
+    }
   });
 
-  // Démarrage du test
+  // Lancer le test
   showQuestion(0);
 </script>
 
