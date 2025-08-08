@@ -171,8 +171,6 @@
   const container = document.getElementById('question-container');
   const validateBtn = document.getElementById('validateBtn');
   const contactForm = document.getElementById('contactForm');
-
-  let current = 0;
   let responses = [];
 
   function showQuestion(index) {
@@ -184,13 +182,14 @@
       const id = `q${index}_a${i}`;
       block.innerHTML += `
         <label>
-          <input type="radio" name="q${index}" value="${answer}" onchange="nextQuestion(${index})"> ${answer}
+          <input type="radio" name="q${index}" value="${answer}" onchange="nextQuestion(${index}, '${answer}')"> ${answer}
         </label>`;
     });
     container.appendChild(block);
   }
 
-  function nextQuestion(index) {
+  function nextQuestion(index, answer) {
+    responses[index] = answer;
     const currentBlock = container.children[index];
     currentBlock.classList.remove('show');
     currentBlock.classList.add('exit');
@@ -210,32 +209,30 @@
   contactForm.addEventListener('submit', function(e) {
     e.preventDefault();
 
-    // Collecte des données du formulaire
-    const prenom = document.getElementById('prenom').value.trim();
-    const nom = document.getElementById('nom').value.trim();
-    const email = document.getElementById('email').value.trim();
+    const data = {
+      prenom: document.getElementById('prenom').value,
+      nom: document.getElementById('nom').value,
+      email: document.getElementById('email').value,
+      reponses: responses
+    };
 
-    // Envoi à l’API
     fetch("http://127.0.0.1:5000/ajouter_contact", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ prenom, nom, email })
+      body: JSON.stringify(data)
     })
     .then(response => {
       if (response.ok) {
         document.getElementById('confirmation').style.display = 'block';
         contactForm.style.display = 'none';
       } else {
-        alert("Erreur lors de l'envoi des données.");
+        alert("Erreur lors de l'envoi. Merci de réessayer.");
       }
     })
-    .catch(error => {
-      console.error("Erreur réseau :", error);
-      alert("Erreur de connexion au serveur.");
-    });
+    .catch(() => alert("Erreur de connexion au serveur."));
   });
 
-  // Lancer le questionnaire
+  // Démarrage du test
   showQuestion(0);
 </script>
 
