@@ -106,98 +106,124 @@
 
 <script>
   const questions = [
-    ["Quand un projet démarre, je suis plutôt du genre à :", [
-      "M'assurer que tout est clair et structuré", // C
-      "Motiver les autres avec enthousiasme",      // I
-      "Prendre les choses en main immédiatement",  // D
-      "M'assurer que tout le monde est à l’aise avec le changement" // S
-    ]],
-    ["Dans une discussion tendue, je :", [
-      "Essaye de comprendre les ressentis des autres", // S
-      "Donne mon point de vue de façon directe",       // D
-      "Cherche à calmer le jeu et rassurer",           // I
-      "Me réfère aux faits pour être le plus juste possible" // C
-    ]],
-    ["En groupe, on me reconnaît souvent pour :", [
-      "Ma fiabilité et mon côté rassurant",            // S
-      "Mon énergie communicative",                     // I
-      "Mon exigence et mon goût du travail bien fait", // C
-      "Mon esprit de décision et ma capacité à trancher" // D
-    ]],
-    ["Quand je suis en désaccord, j’ai tendance à :", [
-      "Argumenter calmement sans chercher à dominer",  // S
-      "Exiger des preuves ou des justifications solides", // C
-      "Imposer mon point de vue",                      // D
-      "Essayer de garder une bonne ambiance"           // I
-    ]],
-    ["Je préfère travailler dans un environnement où :", [
-      "Les procédures sont claires et respectées",     // C
-      "Je peux influencer et inspirer les autres",     // I
-      "Je peux progresser rapidement et prendre des décisions", // D
-      "L’ambiance est stable et sans tension"          // S
-    ]],
-    ["Face à un imprévu (ex : train annulé), je :", [
-      "Cherche immédiatement une solution concrète",   // D
-      "Rassure les autres et reste calme",             // S
-      "Propose une alternative tout en gardant le sourire", // I
-      "Consulte les règles ou options officielles disponibles" // C
-    ]],
-    ["Lorsque je dois convaincre quelqu’un :", [
-      "J’utilise des faits, des chiffres ou des exemples précis", // C
-      "Je m’adapte à l’autre en douceur",              // S
-      "Je mise sur ma force de persuasion",            // I
-      "Je vais droit au but en affirmant ma position"  // D
-    ]],
-    ["En situation d’examen ou d’entretien, je suis plutôt :", [
-      "Préparé et rigoureux",                          // C
-      "Souriant et naturel",                           // I
-      "Posé et détendu",                               // S
-      "Concentré et compétitif"                        // D
-    ]],
-    ["Ce qui me dérange le plus au travail, c’est :", [
-      "Le désordre ou le manque de rigueur",           // C
-      "Le manque d’échanges ou de bonne humeur",       // I
-      "L’indécision ou l’inaction",                    // D
-      "Les conflits ou les ambiances tendues"          // S
-    ]],
-    ["On me dit souvent que je suis :", [
-      "Exigeant mais juste",                           // C
-      "Drôle et sociable",                             // I
-      "Calme et fiable",                               // S
-      "Organisé et précis"                             // D
-    ]]
+    {
+      question: "Quand un projet démarre, je suis plutôt du genre à :",
+      options: [
+        { text: "M'assurer que tout est clair et structuré", style: "C" },
+        { text: "Motiver les autres avec enthousiasme", style: "I" },
+        { text: "Prendre les choses en main immédiatement", style: "D" },
+        { text: "M'assurer que tout le monde est à l’aise avec le changement", style: "S" }
+      ]
+    },
+    {
+      question: "Dans une discussion tendue, je :",
+      options: [
+        { text: "Essaye de comprendre les ressentis des autres", style: "S" },
+        { text: "Donne mon point de vue de façon directe", style: "D" },
+        { text: "Cherche à calmer le jeu et rassurer", style: "I" },
+        { text: "Me réfère aux faits pour être le plus juste possible", style: "C" }
+      ]
+    },
+    {
+      question: "En groupe, on me reconnaît souvent pour :",
+      options: [
+        { text: "Ma fiabilité et mon côté rassurant", style: "S" },
+        { text: "Mon énergie communicative", style: "I" },
+        { text: "Mon exigence et mon goût du travail bien fait", style: "C" },
+        { text: "Mon esprit de décision et ma capacité à trancher", style: "D" }
+      ]
+    },
+    {
+      question: "Quand je suis en désaccord, j’ai tendance à :",
+      options: [
+        { text: "Argumenter calmement sans chercher à dominer", style: "S" },
+        { text: "Exiger des preuves ou des justifications solides", style: "C" },
+        { text: "Imposer mon point de vue", style: "D" },
+        { text: "Essayer de garder une bonne ambiance", style: "I" }
+      ]
+    },
+    {
+      question: "Je préfère travailler dans un environnement où :",
+      options: [
+        { text: "Les procédures sont claires et respectées", style: "C" },
+        { text: "Je peux influencer et inspirer les autres", style: "I" },
+        { text: "Je peux progresser rapidement et prendre des décisions", style: "D" },
+        { text: "L’ambiance est stable et sans tension", style: "S" }
+      ]
+    },
+    {
+      question: "Face à un imprévu (ex : train annulé), je :",
+      options: [
+        { text: "Cherche immédiatement une solution concrète", style: "D" },
+        { text: "Rassure les autres et reste calme", style: "S" },
+        { text: "Propose une alternative tout en gardant le sourire", style: "I" },
+        { text: "Consulte les règles ou options officielles disponibles", style: "C" }
+      ]
+    },
+    {
+      question: "Lorsque je dois convaincre quelqu’un :",
+      options: [
+        { text: "J’utilise des faits, des chiffres ou des exemples précis", style: "C" },
+        { text: "Je m’adapte à l’autre en douceur", style: "S" },
+        { text: "Je mise sur ma force de persuasion", style: "I" },
+        { text: "Je vais droit au but en affirmant ma position", style: "D" }
+      ]
+    },
+    {
+      question: "En situation d’examen ou d’entretien, je suis plutôt :",
+      options: [
+        { text: "Préparé et rigoureux", style: "C" },
+        { text: "Souriant et naturel", style: "I" },
+        { text: "Posé et détendu", style: "S" },
+        { text: "Concentré et compétitif", style: "D" }
+      ]
+    },
+    {
+      question: "Ce qui me dérange le plus au travail, c’est :",
+      options: [
+        { text: "Le désordre ou le manque de rigueur", style: "C" },
+        { text: "Le manque d’échanges ou de bonne humeur", style: "I" },
+        { text: "L’indécision ou l’inaction", style: "D" },
+        { text: "Les conflits ou les ambiances tendues", style: "S" }
+      ]
+    },
+    {
+      question: "On me dit souvent que je suis :",
+      options: [
+        { text: "Exigeant mais juste", style: "D" },
+        { text: "Drôle et sociable", style: "I" },
+        { text: "Calme et fiable", style: "S" },
+        { text: "Organisé et précis", style: "C" }
+      ]
+    }
   ];
 
   const container = document.getElementById('question-container');
   const validateBtn = document.getElementById('validateBtn');
   const contactForm = document.getElementById('contactForm');
-
-  let current = 0;
-  const scores = { D: 0, I: 0, S: 0, C: 0 };
-
-  const styleMap = ["C", "I", "D", "S"];
+  const confirmation = document.getElementById('confirmation');
+  let responses = [];
+  let currentIndex = 0;
 
   function showQuestion(index) {
+    const q = questions[index];
     const block = document.createElement('div');
     block.className = 'question-block show';
-    const q = questions[index];
-    block.innerHTML = `<p><strong>${index + 1}. ${q[0]}</strong></p>`;
-    q[1].forEach((answer, i) => {
-      const style = styleMap[i];
-      const id = `q${index}_a${i}`;
+    block.innerHTML = `<p><strong>${index + 1}. ${q.question}</strong></p>`;
+    q.options.forEach((opt, i) => {
       block.innerHTML += `
         <label>
-          <input type="radio" name="q${index}" value="${style}" onchange="nextQuestion(${index}, '${style}')"> ${answer}
+          <input type="radio" name="q${index}" value="${opt.style}" onchange="selectAnswer('${opt.style}', ${index})"> ${opt.text}
         </label>`;
     });
     container.appendChild(block);
   }
 
-  function nextQuestion(index, style) {
-    scores[style]++;
-    const currentBlock = container.children[index];
-    currentBlock.classList.remove('show');
-    currentBlock.classList.add('exit');
+  function selectAnswer(style, index) {
+    responses[index] = style;
+    const block = container.children[index];
+    block.classList.remove('show');
+    block.classList.add('exit');
 
     if (index + 1 < questions.length) {
       setTimeout(() => showQuestion(index + 1), 500);
@@ -213,29 +239,27 @@
 
   contactForm.addEventListener('submit', function(e) {
     e.preventDefault();
-
     const prenom = document.getElementById('prenom').value;
     const nom = document.getElementById('nom').value;
     const email = document.getElementById('email').value;
 
-    const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
-    let profil = sorted[0][0];
-    if (sorted[1][1] === sorted[0][1]) profil += sorted[1][0];
+    const count = { D: 0, I: 0, S: 0, C: 0 };
+    responses.forEach(r => count[r]++);
+    const sorted = Object.entries(count).sort((a, b) => b[1] - a[1]);
+    const profil = sorted[0][0] + (sorted[1][1] > 0 ? sorted[1][0] : "");
 
-    fetch('http://localhost:5000/ajouter_contact', {
-      method: 'POST',
+    fetch("http://127.0.0.1:5000/ajouter_contact", {
+      method: "POST",
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ prenom, nom, email, profil })
-    }).then(() => {
-      document.getElementById('confirmation').style.display = 'block';
-      this.style.display = 'none';
+    }).then(res => {
+      contactForm.style.display = 'none';
+      confirmation.style.display = 'block';
     }).catch(err => {
       alert("Erreur de connexion au serveur.");
-      console.error(err);
     });
   });
 
-  // Démarrage
   showQuestion(0);
 </script>
 
