@@ -1,232 +1,252 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Mini Test DISC & Valeurs</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #f7f9fa;
-      color: #222;
-      margin: 0;
-      padding: 2rem;
+    :root{
+      --orange:#FFA726;
+      --gris:#ccc;
+      --gris-txt:#666;
+      --vert:#2E7D32;
+      --fond:#f7f9fa;
+      --txt:#222;
+      --card:#fff;
+      --shadow:0 2px 10px rgba(0,0,0,0.1);
     }
-    h1 {
-      text-align: center;
-      color: #2E7D32;
-      margin-bottom: 0.3rem;
+    body{
+      font-family:'Segoe UI',sans-serif;background:var(--fond);color:var(--txt);
+      margin:0;padding:2rem;
     }
-    h2 {
-      text-align: center;
-      font-size: 1rem;
-      color: #444;
-      margin-top: 0;
-      margin-bottom: 2rem;
+    h1{ text-align:center;color:var(--vert);margin-bottom:.3rem;}
+    h2{ text-align:center;font-size:1rem;color:#444;margin:.2rem 0 2rem;}
+    .card{
+      max-width:700px;margin:auto;background:var(--card);padding:2rem;border-radius:8px;box-shadow:var(--shadow);
+      margin-bottom:2rem;
     }
-    #question-container, #contactForm, #confirmation {
-      max-width: 700px;
-      margin: auto;
-      background: #fff;
-      padding: 2rem;
-      border-radius: 8px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-      margin-bottom: 2rem;
+    .question-block{ display:none; transition:transform .5s ease, opacity .3s ease;}
+    .question-block.show{ display:block; opacity:1; transform:translateX(0);}
+    .question-block.exit{ transform:translateX(200%); opacity:0;}
+    label{ display:block; margin:.5rem 0;}
+    .btn{
+      padding:.8rem 1.2rem; font-size:1rem; border-radius:6px; cursor:pointer; display:block; margin:2rem auto 0;
+      border:none;
     }
-    .question-block {
-      display: none;
-      transition: transform 0.5s ease-in-out, opacity 0.3s ease-in-out;
+    .btn-orange{ background:var(--orange); color:#fff; }
+    .btn-disabled{ background:var(--gris); color:var(--gris-txt); cursor:not-allowed; }
+    input[type="text"],input[type="email"]{
+      width:100%; padding:.5rem; margin-top:.3rem; border:1px solid #ccc; border-radius:4px; box-sizing:border-box;
     }
-    .question-block.show {
-      display: block;
-      opacity: 1;
-      transform: translateX(0);
-    }
-    .question-block.exit {
-      transform: translateX(200%);
-      opacity: 0;
-    }
-    label {
-      display: block;
-      margin: 0.5rem 0;
-    }
-    button {
-      padding: 0.8rem 1.2rem;
-      font-size: 1rem;
-      border-radius: 6px;
-      cursor: pointer;
-      display: block;
-      margin: 2rem auto 0;
-    }
-    #validateBtn:disabled {
-      background-color: #ccc;
-      color: #666;
-      border: none;
-    }
-    #validateBtn:enabled {
-      background-color: #FFA726;
-      color: white;
-      border: none;
-    }
-    input[type="text"], input[type="email"] {
-      width: 100%;
-      padding: 0.5rem;
-      margin-top: 0.3rem;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      box-sizing: border-box;
-    }
-    #backHomeBtn {
-      background-color: #2E7D32;
-      color: white;
-      border: none;
-      padding: 0.8rem 1.2rem;
-      font-size: 1rem;
-      border-radius: 6px;
-      cursor: pointer;
-      display: block;
-      margin: 2rem auto 0;
-    }
+    /* “Pages” */
+    #page-questions, #page-contact, #page-merci { display:none; }
+    #page-questions.active, #page-contact.active, #page-merci.active { display:block; }
+
   </style>
 </head>
 <body>
 
-<h1>Mini Test DISC & Valeurs</h1>
-<h2>(Sélectionnez spontanément une seule réponse à 10 questions – c’est rapide !)</h2>
+  <h1>Mini Test DISC & Valeurs</h1>
+  <h2>(Sélectionnez spontanément une seule réponse à 10 questions – c’est rapide !)</h2>
 
-<div id="question-container"></div>
+  <!-- PAGE 1 : QUESTIONS -->
+  <section id="page-questions" class="card active">
+    <div id="question-container"></div>
+    <button id="validateBtn" class="btn btn-orange btn-disabled" disabled>Valider mes réponses</button>
+  </section>
 
-<button id="validateBtn" disabled>Valider mes réponses</button>
+  <!-- PAGE 2 : CONTACT -->
+  <section id="page-contact" class="card">
+    <h3 style="margin-top:0">Vos coordonnées</h3>
+    <form id="contactForm">
+      <label for="prenom">Prénom :</label>
+      <input type="text" id="prenom" name="prenom" required>
 
-<form id="contactForm" style="display:none;">
-  <label for="prenom">Prénom :</label>
-  <input type="text" id="prenom" name="prenom" required>
+      <label for="nom">Nom :</label>
+      <input type="text" id="nom" name="nom" required>
 
-  <label for="nom">Nom :</label>
-  <input type="text" id="nom" name="nom" required>
+      <label for="email">Adresse email :</label>
+      <input type="email" id="email" name="email" required>
 
-  <label for="email">Adresse email :</label>
-  <input type="email" id="email" name="email" required>
+      <button id="sendBtn" type="submit" class="btn btn-disabled" disabled>Envoyer</button>
+    </form>
+  </section>
 
-  <button type="submit">Envoyer</button>
-</form>
+  <!-- PAGE 3 : MERCI -->
+  <section id="page-merci" class="card">
+    <p>Merci ! Vous recevrez votre mini rapport personnalisé dans un délai de 24h.</p>
+    <button class="btn btn-orange" onclick="window.location.href='index.html'">Retour à l'accueil</button>
+  </section>
 
-<div id="confirmation" style="display:none;">
-  <p>Merci ! Vous recevrez votre mini rapport personnalisé dans un délai de 24h.</p>
-  <button id="backHomeBtn" onclick="window.location.href='index.html'">Retour à l’accueil</button>
-</div>
+  <script>
+    // --- Données du questionnaire ---
+    const questions = [
+      ["Quand un projet démarre, je suis plutôt du genre à :", [
+        "M'assurer que tout est clair et structuré",
+        "Motiver les autres avec enthousiasme",
+        "Prendre les choses en main immédiatement",
+        "M'assurer que tout le monde est à l’aise avec le changement"
+      ]],
+      ["Dans une discussion tendue, je :", [
+        "Essaye de comprendre les ressentis des autres",
+        "Donne mon point de vue de façon directe",
+        "Cherche à calmer le jeu et rassurer",
+        "Me réfère aux faits pour être le plus juste possible"
+      ]],
+      ["En groupe, on me reconnaît souvent pour :", [
+        "Ma fiabilité et mon côté rassurant",
+        "Mon énergie communicative",
+        "Mon exigence et mon goût du travail bien fait",
+        "Mon esprit de décision et ma capacité à trancher"
+      ]],
+      ["Quand je suis en désaccord, j’ai tendance à :", [
+        "Argumenter calmement sans chercher à dominer",
+        "Exiger des preuves ou des justifications solides",
+        "Imposer mon point de vue",
+        "Essayer de garder une bonne ambiance"
+      ]],
+      ["Je préfère travailler dans un environnement où :", [
+        "Les procédures sont claires et respectées",
+        "Je peux influencer et inspirer les autres",
+        "Je peux progresser rapidement et prendre des décisions",
+        "L’ambiance est stable et sans tension"
+      ]],
+      ["Face à un imprévu (ex : train annulé), je :", [
+        "Cherche immédiatement une solution concrète",
+        "Rassure les autres et reste calme",
+        "Propose une alternative tout en gardant le sourire",
+        "Consulte les règles ou options officielles disponibles"
+      ]],
+      ["Lorsque je dois convaincre quelqu’un :", [
+        "J’utilise des faits, des chiffres ou des exemples précis",
+        "Je m’adapte à l’autre en douceur",
+        "Je mise sur ma force de persuasion",
+        "Je vais droit au but en affirmant ma position"
+      ]],
+      ["En situation d’examen ou d’entretien, je suis plutôt :", [
+        "Préparé et rigoureux",
+        "Souriant et naturel",
+        "Posé et détendu",
+        "Concentré et compétitif"
+      ]],
+      ["Ce qui me dérange le plus au travail, c’est :", [
+        "Le désordre ou le manque de rigueur",
+        "Le manque d’échanges ou de bonne humeur",
+        "L’indécision ou l’inaction",
+        "Les conflits ou les ambiances tendues"
+      ]],
+      ["On me dit souvent que je suis :", [
+        "Exigeant mais juste",
+        "Drôle et sociable",
+        "Calme et fiable",
+        "Organisé et précis"
+      ]]
+    ];
 
-<script>
-  const questions = [
-    ["Quand un projet démarre, je suis plutôt du genre à :", [
-      "M'assurer que tout est clair et structuré",
-      "Motiver les autres avec enthousiasme",
-      "Prendre les choses en main immédiatement",
-      "M'assurer que tout le monde est à l’aise avec le changement"
-    ]],
-    ["Dans une discussion tendue, je :", [
-      "Essaye de comprendre les ressentis des autres",
-      "Donne mon point de vue de façon directe",
-      "Cherche à calmer le jeu et rassurer",
-      "Me réfère aux faits pour être le plus juste possible"
-    ]],
-    ["En groupe, on me reconnaît souvent pour :", [
-      "Ma fiabilité et mon côté rassurant",
-      "Mon énergie communicative",
-      "Mon exigence et mon goût du travail bien fait",
-      "Mon esprit de décision et ma capacité à trancher"
-    ]],
-    ["Quand je suis en désaccord, j’ai tendance à :", [
-      "Argumenter calmement sans chercher à dominer",
-      "Exiger des preuves ou des justifications solides",
-      "Imposer mon point de vue",
-      "Essayer de garder une bonne ambiance"
-    ]],
-    ["Je préfère travailler dans un environnement où :", [
-      "Les procédures sont claires et respectées",
-      "Je peux influencer et inspirer les autres",
-      "Je peux progresser rapidement et prendre des décisions",
-      "L’ambiance est stable et sans tension"
-    ]],
-    ["Face à un imprévu (ex : train annulé), je :", [
-      "Cherche immédiatement une solution concrète",
-      "Rassure les autres et reste calme",
-      "Propose une alternative tout en gardant le sourire",
-      "Consulte les règles ou options officielles disponibles"
-    ]],
-    ["Lorsque je dois convaincre quelqu’un :", [
-      "J’utilise des faits, des chiffres ou des exemples précis",
-      "Je m’adapte à l’autre en douceur",
-      "Je mise sur ma force de persuasion",
-      "Je vais droit au but en affirmant ma position"
-    ]],
-    ["En situation d’examen ou d’entretien, je suis plutôt :", [
-      "Préparé et rigoureux",
-      "Souriant et naturel",
-      "Posé et détendu",
-      "Concentré et compétitif"
-    ]],
-    ["Ce qui me dérange le plus au travail, c’est :", [
-      "Le désordre ou le manque de rigueur",
-      "Le manque d’échanges ou de bonne humeur",
-      "L’indécision ou l’inaction",
-      "Les conflits ou les ambiances tendues"
-    ]],
-    ["On me dit souvent que je suis :", [
-      "Exigeant mais juste",
-      "Drôle et sociable",
-      "Calme et fiable",
-      "Organisé et précis"
-    ]]
-  ];
+    // --- Références DOM ---
+    const pageQuestions = document.getElementById('page-questions');
+    const pageContact   = document.getElementById('page-contact');
+    const pageMerci     = document.getElementById('page-merci');
+    const container     = document.getElementById('question-container');
+    const validateBtn   = document.getElementById('validateBtn');
+    const contactForm   = document.getElementById('contactForm');
+    const sendBtn       = document.getElementById('sendBtn');
 
-  const container = document.getElementById('question-container');
-  const validateBtn = document.getElementById('validateBtn');
-  const contactForm = document.getElementById('contactForm');
+    // --- État ---
+    let responses = [];
 
-  let current = 0;
-
-  function showQuestion(index) {
-    const block = document.createElement('div');
-    block.className = 'question-block show';
-    const q = questions[index];
-    block.innerHTML = `<p><strong>${index + 1}. ${q[0]}</strong></p>`;
-    q[1].forEach((answer, i) => {
-      const id = `q${index}_a${i}`;
-      block.innerHTML += `
-        <label>
-          <input type="radio" name="q${index}" value="${answer}" onchange="nextQuestion(${index})"> ${answer}
-        </label>`;
-    });
-    container.appendChild(block);
-  }
-
-  function nextQuestion(index) {
-    const currentBlock = container.children[index];
-    currentBlock.classList.remove('show');
-    currentBlock.classList.add('exit');
-
-    if (index + 1 < questions.length) {
-      setTimeout(() => showQuestion(index + 1), 500);
-    } else {
-      validateBtn.disabled = false;
+    // --- Affichage des questions en séquence ---
+    function showQuestion(index){
+      const block = document.createElement('div');
+      block.className = 'question-block show';
+      const q = questions[index];
+      block.innerHTML = `<p><strong>${index+1}. ${q[0]}</strong></p>`;
+      q[1].forEach((answer,i)=>{
+        block.innerHTML += `
+          <label>
+            <input type="radio" name="q${index}" value="${answer}" onchange="nextQuestion(${index})"> ${answer}
+          </label>`;
+      });
+      container.appendChild(block);
     }
-  }
 
-  document.getElementById('validateBtn').addEventListener('click', () => {
-    contactForm.style.display = 'block';
-    validateBtn.style.display = 'none';
-    window.scrollTo(0, document.body.scrollHeight);
-  });
+    window.nextQuestion = function(index){
+      // sauvegarde réponse
+      const selected = document.querySelector(`input[name="q${index}"]:checked`);
+      if(selected) responses[index] = selected.value;
 
-  contactForm.addEventListener('submit', function(e) {
-    e.preventDefault();
-    document.getElementById('confirmation').style.display = 'block';
-    contactForm.style.display = 'none';
-  });
+      // animation sortie
+      const currentBlock = container.children[index];
+      currentBlock.classList.remove('show');
+      currentBlock.classList.add('exit');
 
-  showQuestion(0);
-</script>
+      if(index+1 < questions.length){
+        setTimeout(()=>showQuestion(index+1), 500);
+      }else{
+        // Questionnaire terminé -> bouton actif
+        validateBtn.disabled = false;
+        validateBtn.classList.remove('btn-disabled');
+        validateBtn.classList.add('btn-orange');
+      }
+    }
 
+    // --- Passage à la page Contact ---
+    validateBtn.addEventListener('click', ()=>{
+      // cacher page 1, montrer page 2
+      pageQuestions.classList.remove('active');
+      pageContact.classList.add('active');
+      // éviter toute réapparition du bouton
+      validateBtn.style.display = 'none';
+      window.scrollTo(0,0);
+    });
+
+    // --- Validation des champs pour activer le bouton Envoyer ---
+    ['prenom','nom','email'].forEach(id=>{
+      document.getElementById(id).addEventListener('input', toggleSendState);
+    });
+    function toggleSendState(){
+      const prenom = document.getElementById('prenom').value.trim();
+      const nom    = document.getElementById('nom').value.trim();
+      const email  = document.getElementById('email').value.trim();
+      const ok = prenom && nom && email;
+      sendBtn.disabled = !ok;
+      if(ok){
+        sendBtn.classList.remove('btn-disabled');
+        sendBtn.classList.add('btn-orange');
+      }else{
+        sendBtn.classList.add('btn-disabled');
+        sendBtn.classList.remove('btn-orange');
+      }
+    }
+
+    // --- Envoi au serveur + page Merci ---
+    contactForm.addEventListener('submit', function(e){
+      e.preventDefault();
+
+      const prenom = document.getElementById('prenom').value.trim();
+      const nom    = document.getElementById('nom').value.trim();
+      const email  = document.getElementById('email').value.trim();
+
+      fetch("http://127.0.0.1:5000/ajouter_contact",{
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body:JSON.stringify({ prenom, nom, email, reponses: responses })
+      })
+      .then(r=>{
+        if(!r.ok) throw new Error('envoi');
+        // page 2 -> page 3
+        pageContact.classList.remove('active');
+        pageMerci.classList.add('active');
+        window.scrollTo(0,0);
+      })
+      .catch(()=>{
+        alert("Erreur d'envoi. Merci de réessayer.");
+      });
+    });
+
+    // --- Démarrage ---
+    pageQuestions.classList.add('active');
+    showQuestion(0);
+  </script>
 </body>
 </html>
