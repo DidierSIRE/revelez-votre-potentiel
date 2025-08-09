@@ -6,121 +6,62 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     :root{
-      --orange:#FFA726;
-      --olive:#8BC34A;
-      --bleu:#42A5F5;
-      --vert:#2E7D32;
-      --fond:#fdfdfd;
-      --gris:#f1f1f1;
-      --txt:#222;
+      --orange:#FFA726; --olive:#8BC34A; --bleu:#42A5F5;
+      --vert:#2E7D32; --fond:#fdfdfd; --gris:#f1f1f1; --txt:#222;
     }
     *{box-sizing:border-box}
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: var(--fond);
-      color: var(--txt);
-      margin: 0;
+    body{font-family:'Segoe UI',sans-serif;background:var(--fond);color:var(--txt);margin:0}
+    header{
+      background:linear-gradient(to right,var(--orange),var(--olive),var(--bleu));
+      color:#fff; text-align:center; padding:2rem 1rem 1.6rem;
     }
-    header {
-      background: linear-gradient(to right, var(--orange), var(--olive), var(--bleu));
-      color: white;
-      text-align: center;
-      padding: 2.2rem 1rem 1.8rem;
-      position: relative;
-      overflow: hidden;
-    }
-    .title-row{
-      display:flex; align-items:center; justify-content:center; gap:12px; flex-wrap:wrap;
-    }
-    .branch{
-      width:52px; height:auto; opacity:.9; filter: drop-shadow(0 2px 2px rgba(0,0,0,.15));
-    }
-    h1 {
-      margin: 0;
-      font-size: clamp(2rem, 3vw, 2.6rem);
-      letter-spacing:.3px;
-      text-shadow: 0 1px 2px rgba(0,0,0,.18);
-    }
-    header p{
-      margin:.6rem 0 0;
-      opacity:.95;
-    }
-    main {
-      max-width: 960px;
-      margin: auto;
-      padding: 2rem 1.25rem 2.5rem;
-    }
-    section { margin-bottom: 2.4rem; }
-    h2 {
-      color: var(--vert);
-      font-size: 1.55rem;
-      margin: 0 0 1rem;
-    }
+    .title-row{display:flex; align-items:center; justify-content:center; gap:12px; flex-wrap:wrap}
+    .branch{width:48px; height:auto; opacity:.95}
+    .branch.mirror{transform:scaleX(-1)}
+    h1{margin:0; font-size:clamp(2rem,3vw,2.6rem); letter-spacing:.3px; text-shadow:0 1px 2px rgba(0,0,0,.18)}
+    header p{margin:.6rem 0 0; opacity:.95}
 
-    /* Bloc présentation avec photo */
-    .intro{
-      display:grid; grid-template-columns: 140px 1fr; gap:1.25rem; align-items:start;
-    }
+    main{max-width:960px; margin:auto; padding:2rem 1.25rem 2.5rem}
+    section{margin-bottom:2.4rem}
+    h2{color:var(--vert); font-size:1.55rem; margin:0 0 1rem}
+    ul{list-style:disc; padding-left:1.4rem}
+    ol{padding-left:1.2rem}
+
+    /* Photo ronde centrée */
+    .portrait-wrap{ text-align:center; margin:1.2rem 0 1.4rem}
     .portrait{
-      width:140px; height:140px; border-radius:50%; object-fit:cover;
-      background:#ddd url('assets/photo-didier.jpg') center/cover no-repeat;
-      box-shadow: 0 4px 14px rgba(0,0,0,.12);
-      border:4px solid #fff;
-    }
-    @media (max-width:700px){
-      .intro{ grid-template-columns:1fr; }
-      .portrait{ margin:auto; }
+      width:150px; height:150px; border-radius:50%; object-fit:cover;
+      box-shadow:0 4px 12px rgba(0,0,0,.15); border:4px solid #fff;
+      background:#ddd;
     }
 
-    ul { list-style: disc; padding-left: 1.4rem; }
-    ol { padding-left: 1.2rem; }
+    .cta{text-align:center; margin-top:2rem}
+    .cta a{
+      background:var(--orange); color:#fff; padding:.9rem 1.3rem; text-decoration:none;
+      font-weight:600; border-radius:8px; display:inline-block;
+      box-shadow:0 4px 12px rgba(255,167,38,.35);
+      transition:transform .06s ease, box-shadow .2s ease;
+    }
+    .cta a:hover{transform:translateY(-1px); box-shadow:0 6px 16px rgba(255,167,38,.45)}
 
-    .cta {
-      text-align: center;
-      margin-top: 2rem;
-    }
-    .cta a {
-      background-color: var(--orange);
-      color: white;
-      padding: 0.9rem 1.3rem;
-      text-decoration: none;
-      font-weight: 600;
-      border-radius: 8px;
-      display:inline-block;
-      box-shadow: 0 4px 12px rgba(255,167,38,.35);
-      transition: transform .06s ease, box-shadow .2s ease;
-    }
-    .cta a:hover{ transform: translateY(-1px); box-shadow:0 6px 16px rgba(255,167,38,.45); }
-
-    .contact {
-      text-align: center;
-      margin-top: 1.6rem;
-      font-size: 1.05rem;
-    }
+    .contact{text-align:center; margin-top:1.6rem; font-size:1.05rem}
     .mail{
       display:inline-flex; align-items:center; gap:.5rem; color:var(--txt);
-      text-decoration:none; padding:.45rem .7rem; border-radius:8px;
-      background: var(--gris);
+      text-decoration:none; padding:.45rem .7rem; border-radius:8px; background:var(--gris);
     }
-    .mail svg{ width:18px; height:18px; }
-    .mail:hover{ background:#e9e9e9; }
+    .mail svg{width:18px; height:18px}
+    .mail:hover{background:#e9e9e9}
 
-    footer {
-      text-align: center;
-      padding: 1rem;
-      background-color: var(--gris);
-      color: #666;
-      font-size: 0.92rem;
-    }
+    footer{text-align:center; padding:1rem; background:var(--gris); color:#666; font-size:.92rem}
   </style>
 </head>
 <body>
 
 <header>
   <div class="title-row">
-    <img class="branch" src="Logo.png" alt="Branche d’olivier">
+    <img class="branch" src="branche.png" alt="Branche d’olivier">
     <h1>Révélez votre potentiel</h1>
-    <img class="branch" src="Logo.png" alt="Branche d’olivier">
+    <img class="branch mirror" src="branche.png" alt="Branche d’olivier en miroir">
   </div>
   <p>Pour mieux choisir, mieux dire, mieux être</p>
 </header>
@@ -128,17 +69,15 @@
 <main>
   <section>
     <h2>Qui suis-je&nbsp;?</h2>
-    <div class="intro">
-      <!-- Photo : place ton fichier dans /assets/photo-didier.jpg -->
-      <div class="portrait" role="img" aria-label="Portrait de Didier Sire"></div>
-
-      <p>
-        Je m'appelle Didier.<br>
-        Mon parcours riche et pluriel m'a mené à accompagner celles et ceux qui ressentent le besoin de se réaligner, de faire des choix ou de mieux se connaître.<br>
-        J'utilise des outils puissants comme le DISC de Marston et les valeurs de Spranger pour éclairer votre fonctionnement profond.<br>
-        Mon approche est sensible, non jugeante et tournée vers l’essentiel&nbsp;: vous.
-      </p>
+    <div class="portrait-wrap">
+      <img class="portrait" src="photo-didier.jpg" alt="Photo de Didier">
     </div>
+    <p>
+      Je m'appelle Didier.<br>
+      Mon parcours riche et pluriel m'a mené à accompagner celles et ceux qui ressentent le besoin de se réaligner, de faire des choix ou de mieux se connaître.<br>
+      J'utilise des outils puissants comme le DISC de Marston et les valeurs de Spranger pour éclairer votre fonctionnement profond.<br>
+      Mon approche est sensible, non jugeante et tournée vers l’essentiel&nbsp;: vous.
+    </p>
   </section>
 
   <section>
@@ -148,7 +87,7 @@
       <li>Vous vous sentez en décalage avec votre environnement.</li>
       <li>Vous voulez (re)trouver votre place avec lucidité et confiance.</li>
       <li>Vous préparez un entretien, un concours, une transition.</li>
-      <li>Vous souhaitez recruter ou sélectionner un collaborateur en conscience.</li>
+      <li>Vous souhaitez recruter ou sélectionner un collaborateur en confiance.</li>
     </ul>
   </section>
 
@@ -173,7 +112,6 @@
   <div class="contact">
     ✉️ Me contacter&nbsp;:<br>
     <a class="mail" href="mailto:revelezvostalents@gmail.com" title="Écrire à Didier">
-      <!-- Icône mail (inline SVG, pas de dépendance externe) -->
       <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
         <path d="M4 6h16a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z" stroke="#333" stroke-width="1.5"/>
         <path d="M22 8l-9.2 6.9a1 1 0 0 1-1.2 0L2 8" stroke="#333" stroke-width="1.5"/>
