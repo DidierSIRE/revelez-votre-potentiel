@@ -5,82 +5,35 @@
   <title>Révélez votre potentiel</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    :root{
-      --orange:#FFA726; --vert:#2E7D32; --fond:#fdfdfd; --gris:#f1f1f1; --txt:#222;
-      --hdrH: 132px; /* hauteur header */
-    }
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
+    :root{--orange:#FFA726;--vert:#2E7D32;--fond:#fdfdfd;--gris:#f1f1f1;--txt:#222;--hdrH:132px}
+    *{box-sizing:border-box} html{scroll-behavior:smooth}
     body{font-family:'Segoe UI',sans-serif;background:var(--fond);color:var(--txt);margin:0}
-
-    /* HEADER FIXE */
-    .site-header{
-      position:fixed; top:0; left:0; right:0; z-index:1000;
-      background:var(--orange);
-      color:#fff; box-shadow:0 2px 10px rgba(0,0,0,.15);
-    }
-    .title-row{display:flex; align-items:center; justify-content:center; gap:16px; padding:18px 12px 8px}
-    .branch{width:144px; height:auto; opacity:.95; filter:drop-shadow(0 2px 2px rgba(0,0,0,.12))}
-    .branch.mirror{transform:scaleX(-1)}
-    h1{margin:0; font-size:clamp(1.8rem,3vw,2.6rem); text-shadow:0 1px 2px rgba(0,0,0,.18)}
-    .subtitle{margin:4px 0 10px; text-align:center; opacity:.95}
-
-    /* NAV */
-    .nav{
-      display:flex; gap:14px; justify-content:center; flex-wrap:wrap;
-      background:rgba(255,255,255,.12); padding:10px 12px 12px;
-      border-top:1px solid rgba(255,255,255,.12);
-    }
-    .nav a{
-      color:#fff; text-decoration:none; padding:8px 12px; border-radius:8px; font-weight:600;
-      transition:background .2s ease, transform .06s ease;
-    }
-    .nav a:hover{ background:rgba(255,255,255,.18); transform:translateY(-1px) }
-
-    /* Décalage du contenu sous header fixe */
-    .page-offset{ height:calc(var(--hdrH) + 20px); }
-
-    main{max-width:960px; margin:auto; padding:2rem 1.25rem 2.5rem}
-    section{margin-bottom:2.4rem; scroll-margin-top:calc(var(--hdrH) + 12px)}
-    h2{color:var(--vert); font-size:1.55rem; margin:0 0 1rem}
-    ul{list-style:disc; padding-left:1.4rem}
-    ol{padding-left:1.2rem}
-
-    /* Photo ronde centrée */
-    .portrait-wrap{text-align:center; margin:1.2rem 0 1.4rem}
-    .portrait{
-      width:150px; height:150px; border-radius:50%; object-fit:cover;
-      box-shadow:0 4px 12px rgba(0,0,0,.15); border:4px solid #fff; background:#ddd;
-    }
-
-    .cta{text-align:center; margin-top:1.4rem}
-    .cta a{
-      background:var(--orange); color:#fff; padding:.9rem 1.3rem; text-decoration:none;
-      font-weight:600; border-radius:8px; display:inline-block;
-      box-shadow:0 4px 12px rgba(255,167,38,.35);
-      transition:transform .06s ease, box-shadow .2s ease;
-    }
-    .cta a:hover{transform:translateY(-1px); box-shadow:0 6px 16px rgba(255,167,38,.45)}
-
-    .contact{text-align:center; margin-top:1.6rem; font-size:1.05rem}
-    .mail{
-      display:inline-flex; align-items:center; gap:.5rem; color:var(--txt);
-      text-decoration:none; padding:.45rem .7rem; border-radius:8px; background:var(--gris);
-    }
-    .mail svg{width:18px; height:18px}
-    .mail:hover{background:#e9e9e9}
-
-    footer{text-align:center; padding:1rem; background:var(--gris); color:#666; font-size:.92rem}
-
-    @media (max-width:560px){
-      .branch{width:104px}
-      :root{ --hdrH: 128px; }
-    }
+    .site-header{position:fixed;top:0;left:0;right:0;z-index:1000;background:var(--orange);color:#fff;box-shadow:0 2px 10px rgba(0,0,0,.15)}
+    .title-row{display:flex;align-items:center;justify-content:center;gap:16px;padding:18px 12px 8px}
+    .branch{width:144px;height:auto;opacity:.95;filter:drop-shadow(0 2px 2px rgba(0,0,0,.12))} .branch.mirror{transform:scaleX(-1)}
+    h1{margin:0;font-size:clamp(1.8rem,3vw,2.6rem);text-shadow:0 1px 2px rgba(0,0,0,.18)}
+    .subtitle{margin:4px 0 10px;text-align:center;opacity:.95}
+    .nav{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;background:rgba(255,255,255,.12);padding:10px 12px 12px;border-top:1px solid rgba(255,255,255,.12)}
+    .nav a{color:#fff;text-decoration:none;padding:8px 12px;border-radius:8px;font-weight:600;transition:background .2s ease,transform .06s ease}
+    .nav a:hover{background:rgba(255,255,255,.18);transform:translateY(-1px)}
+    .page-offset{height:calc(var(--hdrH) + 20px)}
+    main{max-width:960px;margin:auto;padding:2rem 1.25rem 2.5rem}
+    section{margin-bottom:2.4rem}
+    h2{color:var(--vert);font-size:1.55rem;margin:0 0 1rem}
+    ul{list-style:disc;padding-left:1.4rem} ol{padding-left:1.2rem}
+    .portrait-wrap{text-align:center;margin:1.2rem 0 1.4rem}
+    .portrait{width:150px;height:150px;border-radius:50%;object-fit:cover;box-shadow:0 4px 12px rgba(0,0,0,.15);border:4px solid #fff;background:#ddd}
+    .cta{text-align:center;margin-top:1.4rem}
+    .cta a{background:#FFA726;color:#fff;padding:.9rem 1.3rem;text-decoration:none;font-weight:600;border-radius:8px;display:inline-block;box-shadow:0 4px 12px rgba(255,167,38,.35);transition:transform .06s ease,box-shadow .2s ease}
+    .cta a:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(255,167,38,.45)}
+    .contact{text-align:center;margin-top:1.6rem;font-size:1.05rem}
+    .mail{display:inline-flex;align-items:center;gap:.5rem;color:var(--txt);text-decoration:none;padding:.45rem .7rem;border-radius:8px;background:var(--gris)}
+    .mail svg{width:18px;height:18px} .mail:hover{background:#e9e9e9}
+    footer{text-align:center;padding:1rem;background:var(--gris);color:#666;font-size:.92rem}
+    @media (max-width:560px){.branch{width:104px}:root{--hdrH:128px}}
   </style>
 </head>
 <body>
-
-  <!-- HEADER FIXE -->
   <header class="site-header">
     <div class="title-row">
       <img class="branch" src="branche.png" alt="Branche d’olivier">
@@ -88,21 +41,19 @@
       <img class="branch mirror" src="branche.png" alt="Branche d’olivier en miroir">
     </div>
     <div class="subtitle">Pour mieux choisir, mieux dire, mieux être</div>
-
     <nav class="nav" aria-label="Navigation principale">
-      <a href="#accueil">Accueil</a>
+      <a href="index.html">Accueil</a>
       <a href="test.html">Test gratuit</a>
-      <a href="#prestations">Prestations</a>
-      <a href="#exemples">Exemples</a>
-      <a href="#contact">Contact</a>
+      <a href="prestations.html">Prestations</a>
+      <a href="exemples.html">Exemples</a>
+      <a href="contact.html">Contact</a>
     </nav>
   </header>
 
   <div class="page-offset" aria-hidden="true"></div>
 
   <main>
-    <!-- ACCUEIL -->
-    <section id="accueil">
+    <section>
       <h2>Qui suis-je&nbsp;?</h2>
       <div class="portrait-wrap">
         <img class="portrait" src="photo-didier.jpg" alt="Photo de Didier">
@@ -119,34 +70,33 @@
       </div>
     </section>
 
-    <!-- PRESTATIONS -->
-    <section id="prestations">
+    <section>
+      <h2>À qui s’adresse ce service&nbsp;?</h2>
+      <ul>
+        <li>Vous vous interrogez sur un choix professionnel ou personnel important.</li>
+        <li>Vous vous sentez en décalage avec votre environnement.</li>
+        <li>Vous voulez (re)trouver votre place avec lucidité et confiance.</li>
+        <li>Vous préparez un entretien, un concours, une transition.</li>
+        <li>Vous souhaitez recruter ou sélectionner un collaborateur en confiance.</li>
+      </ul>
+    </section>
+
+    <section>
       <h2>Ce que je propose</h2>
       <p><strong>Un accompagnement personnalisé en 3 temps&nbsp;:</strong></p>
       <ol>
-        <li><strong>Évaluation comportementale (DISC) et motivationnelle (Spranger)</strong><br>
-          Pour poser les bases&nbsp;: ce que vous aimez faire et comment vous le faites.</li>
-        <li><strong>Débrief individuel (1/2 journée)</strong><br>
-          Pour révéler vos dynamiques personnelles&nbsp;: vos leviers, vos freins, vos zones d’alignement.</li>
-        <li><strong>Plan d’action clair</strong><br>
-          Pour avancer en conscience&nbsp;: orientation, reconversion, posture en entretien, gestion relationnelle…</li>
+        <li><strong>Évaluation comportementale (DISC) et motivationnelle (Spranger)</strong><br>Pour poser les bases&nbsp;: ce que vous aimez faire et comment vous le faites.</li>
+        <li><strong>Débrief individuel (1/2 journée)</strong><br>Pour révéler vos dynamiques personnelles&nbsp;: vos leviers, vos freins, vos zones d’alignement.</li>
+        <li><strong>Plan d’action clair</strong><br>Pour avancer en conscience&nbsp;: orientation, reconversion, posture en entretien, gestion relationnelle…</li>
       </ol>
       <p>💡 Pour les prises de parole en public, concours ou entretiens, je propose également des scénarios d'entraînement sur mesure.</p>
     </section>
 
-    <!-- EXEMPLES -->
-    <section id="exemples">
-      <h2>Exemples d’usages</h2>
-      <ul>
-        <li>Préparer un entretien ou un concours avec un plan d’entraînement personnalisé.</li>
-        <li>Clarifier un projet de reconversion et identifier les contextes propices.</li>
-        <li>Mieux se comprendre dans une équipe et fluidifier la communication.</li>
-        <li>Recruter en confiance, en comprenant les dynamiques comportementales et de motivation.</li>
-      </ul>
+    <section class="cta">
+      <a href="test.html">Évaluez l’évaluation&nbsp;!</a>
     </section>
 
-    <!-- CONTACT -->
-    <section id="contact">
+    <section>
       <h2>Contact</h2>
       <p class="contact">
         ✉️ Me contacter&nbsp;:<br>
@@ -161,8 +111,6 @@
     </section>
   </main>
 
-  <footer>
-    &copy; Didier Sire – Révélateur de potentiels
-  </footer>
+  <footer>&copy; Didier Sire – Révélateur de potentiels</footer>
 </body>
 </html>
