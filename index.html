@@ -8,21 +8,41 @@
     :root{
       --orange:#FFA726; --olive:#8BC34A; --bleu:#42A5F5;
       --vert:#2E7D32; --fond:#fdfdfd; --gris:#f1f1f1; --txt:#222;
+      --hdrH: 132px; /* hauteur header (titre + nav) */
     }
     *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
     body{font-family:'Segoe UI',sans-serif;background:var(--fond);color:var(--txt);margin:0}
-    header{
+
+    /* HEADER FIXE */
+    .site-header{
+      position:fixed; top:0; left:0; right:0; z-index:1000;
       background:linear-gradient(to right,var(--orange),var(--olive),var(--bleu));
-      color:#fff; text-align:center; padding:2rem 1rem 1.6rem;
+      color:#fff; box-shadow:0 2px 10px rgba(0,0,0,.15);
     }
-    .title-row{display:flex; align-items:center; justify-content:center; gap:16px; flex-wrap:wrap}
+    .title-row{display:flex; align-items:center; justify-content:center; gap:16px; padding:18px 12px 8px}
     .branch{width:144px; height:auto; opacity:.95; filter:drop-shadow(0 2px 2px rgba(0,0,0,.12))}
     .branch.mirror{transform:scaleX(-1)}
-    h1{margin:0; font-size:clamp(2rem,3.2vw,2.8rem); letter-spacing:.3px; text-shadow:0 1px 2px rgba(0,0,0,.18)}
-    header p{margin:.6rem 0 0; opacity:.95}
+    h1{margin:0; font-size:clamp(1.8rem,3vw,2.6rem); text-shadow:0 1px 2px rgba(0,0,0,.18)}
+    .subtitle{margin:4px 0 10px; text-align:center; opacity:.95}
+
+    /* NAV */
+    .nav{
+      display:flex; gap:14px; justify-content:center; flex-wrap:wrap;
+      background:rgba(255,255,255,.12); padding:10px 12px 12px;
+      border-top:1px solid rgba(255,255,255,.12);
+    }
+    .nav a{
+      color:#fff; text-decoration:none; padding:8px 12px; border-radius:8px; font-weight:600;
+      transition:background .2s ease, transform .06s ease;
+    }
+    .nav a:hover{ background:rgba(255,255,255,.18); transform:translateY(-1px) }
+
+    /* Décalage du contenu sous header fixe */
+    .page-offset{ height:var(--hdrH); }
 
     main{max-width:960px; margin:auto; padding:2rem 1.25rem 2.5rem}
-    section{margin-bottom:2.4rem}
+    section{margin-bottom:2.4rem; scroll-margin-top:calc(var(--hdrH) + 12px)}
     h2{color:var(--vert); font-size:1.55rem; margin:0 0 1rem}
     ul{list-style:disc; padding-left:1.4rem}
     ol{padding-left:1.2rem}
@@ -52,77 +72,99 @@
     .mail:hover{background:#e9e9e9}
 
     footer{text-align:center; padding:1rem; background:var(--gris); color:#666; font-size:.92rem}
+
+    /* Responsive: réduire la taille des branches sur petits écrans */
+    @media (max-width:560px){
+      .branch{width:104px}
+      :root{ --hdrH: 128px; }
+    }
   </style>
 </head>
 <body>
 
-<header>
-  <div class="title-row">
-    <img class="branch" src="branche.png" alt="Branche d’olivier">
-    <h1>Révélez votre potentiel</h1>
-    <img class="branch mirror" src="branche.png" alt="Branche d’olivier en miroir">
-  </div>
-  <p>Pour mieux choisir, mieux dire, mieux être</p>
-</header>
-
-<main>
-  <section>
-    <h2>Qui suis-je&nbsp;?</h2>
-    <div class="portrait-wrap">
-      <img class="portrait" src="photo-didier.jpg" alt="Photo de Didier">
+  <!-- HEADER FIXE -->
+  <header class="site-header">
+    <div class="title-row">
+      <img class="branch" src="branche.png" alt="Branche d’olivier">
+      <h1>Révélez votre potentiel</h1>
+      <img class="branch mirror" src="branche.png" alt="Branche d’olivier en miroir">
     </div>
-    <p>
-      Je m'appelle Didier.<br>
-      Mon parcours riche et pluriel m'a mené à accompagner celles et ceux qui ressentent le besoin de se réaligner, de faire des choix ou de mieux se connaître.<br>
-      J'utilise des outils puissants comme le DISC de Marston et les valeurs de Spranger pour éclairer votre fonctionnement profond.<br>
-      Mon approche est sensible, non jugeante et tournée vers l’essentiel&nbsp;: vous.
-    </p>
-  </section>
+    <div class="subtitle">Pour mieux choisir, mieux dire, mieux être</div>
 
-  <section>
-    <h2>À qui s’adresse ce service&nbsp;?</h2>
-    <ul>
-      <li>Vous vous interrogez sur un choix professionnel ou personnel important.</li>
-      <li>Vous vous sentez en décalage avec votre environnement.</li>
-      <li>Vous voulez (re)trouver votre place avec lucidité et confiance.</li>
-      <li>Vous préparez un entretien, un concours, une transition.</li>
-      <li>Vous souhaitez recruter ou sélectionner un collaborateur en confiance.</li>
-    </ul>
-  </section>
+    <nav class="nav" aria-label="Navigation principale">
+      <a href="#accueil">Accueil</a>
+      <a href="test.html">Test gratuit</a>
+      <a href="#prestations">Prestations</a>
+      <a href="#exemples">Exemples</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
 
-  <section>
-    <h2>Ce que je propose</h2>
-    <p><strong>Un accompagnement personnalisé en 3 temps&nbsp;:</strong></p>
-    <ol>
-      <li><strong>Évaluation comportementale (DISC) et motivationnelle (Spranger)</strong><br>
-        Pour poser les bases&nbsp;: ce que vous aimez faire et comment vous le faites.</li>
-      <li><strong>Débrief individuel (1/2 journée)</strong><br>
-        Pour révéler vos dynamiques personnelles&nbsp;: vos leviers, vos freins, vos zones d’alignement.</li>
-      <li><strong>Plan d’action clair</strong><br>
-        Pour avancer en conscience&nbsp;: orientation, reconversion, posture en entretien, gestion relationnelle…</li>
-    </ol>
-    <p>💡 Pour les prises de parole en public, concours ou entretiens, je propose également des scénarios d'entraînement sur mesure.</p>
-  </section>
+  <!-- Décalage pour ne pas passer sous le header fixe -->
+  <div class="page-offset" aria-hidden="true"></div>
 
-  <section class="cta">
-    <a href="test.html">Évaluez l’évaluation&nbsp;!</a>
-  </section>
+  <main>
+    <!-- ACCUEIL -->
+    <section id="accueil">
+      <h2>Qui suis-je&nbsp;?</h2>
+      <div class="portrait-wrap">
+        <img class="portrait" src="photo-didier.jpg" alt="Photo de Didier">
+      </div>
+      <p>
+        Je m'appelle Didier.<br>
+        Mon parcours riche et pluriel m'a mené à accompagner celles et ceux qui ressentent le besoin de se réaligner, de faire des choix ou de mieux se connaître.<br>
+        J'utilise des outils puissants comme le DISC de Marston et les valeurs de Spranger pour éclairer votre fonctionnement profond.<br>
+        Mon approche est sensible, non jugeante et tournée vers l’essentiel&nbsp;: vous.
+      </p>
+      <div class="cta">
+        <a href="test.html">Évaluez l’évaluation&nbsp;!</a>
+      </div>
+    </section>
 
-  <div class="contact">
-    ✉️ Me contacter&nbsp;:<br>
-    <a class="mail" href="mailto:revelezvostalents@gmail.com" title="Écrire à Didier">
-      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <path d="M4 6h16a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z" stroke="#333" stroke-width="1.5"/>
-        <path d="M22 8l-9.2 6.9a1 1 0 0 1-1.2 0L2 8" stroke="#333" stroke-width="1.5"/>
-      </svg>
-      revelezvostalents@gmail.com
-    </a>
-  </div>
-</main>
+    <!-- PRESTATIONS -->
+    <section id="prestations">
+      <h2>Ce que je propose</h2>
+      <p><strong>Un accompagnement personnalisé en 3 temps&nbsp;:</strong></p>
+      <ol>
+        <li><strong>Évaluation comportementale (DISC) et motivationnelle (Spranger)</strong><br>
+          Pour poser les bases&nbsp;: ce que vous aimez faire et comment vous le faites.</li>
+        <li><strong>Débrief individuel (1/2 journée)</strong><br>
+          Pour révéler vos dynamiques personnelles&nbsp;: vos leviers, vos freins, vos zones d’alignement.</li>
+        <li><strong>Plan d’action clair</strong><br>
+          Pour avancer en conscience&nbsp;: orientation, reconversion, posture en entretien, gestion relationnelle…</li>
+      </ol>
+      <p>💡 Pour les prises de parole en public, concours ou entretiens, je propose également des scénarios d'entraînement sur mesure.</p>
+    </section>
 
-<footer>
-  &copy; Didier Sire – Révélateur de potentiels
-</footer>
+    <!-- EXEMPLES -->
+    <section id="exemples">
+      <h2>Exemples d’usages</h2>
+      <ul>
+        <li>Préparer un entretien ou un concours avec un plan d’entraînement personnalisé.</li>
+        <li>Clarifier un projet de reconversion et identifier les contextes propices.</li>
+        <li>Mieux se comprendre dans une équipe et fluidifier la communication.</li>
+        <li>Recruter en confiance, en comprenant les dynamiques comportementales et de motivation.</li>
+      </ul>
+    </section>
 
+    <!-- CONTACT -->
+    <section id="contact">
+      <h2>Contact</h2>
+      <p class="contact">
+        ✉️ Me contacter&nbsp;:<br>
+        <a class="mail" href="mailto:revelezvostalents@gmail.com" title="Écrire à Didier">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M4 6h16a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z" stroke="#333" stroke-width="1.5"/>
+            <path d="M22 8l-9.2 6.9a1 1 0 0 1-1.2 0L2 8" stroke="#333" stroke-width="1.5"/>
+          </svg>
+          revelezvostalents@gmail.com
+        </a>
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    &copy; Didier Sire – Révélateur de potentiels
+  </footer>
 </body>
 </html>
