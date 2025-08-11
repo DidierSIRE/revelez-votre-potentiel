@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Évaluation DISC – 50 questions</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root{
+      --orange:#FFA726; --vert:#2E7D32; --fond:#f7f9fa; --txt:#222; --card:#fff;
+      --shadow:0 2px 10px rgba(0,0,0,.1); --hdrH:120px;
+    }
+    *{box-sizing:border-box}
+    body{font-family:'Segoe UI',sans-serif;background:var(--fond);color:var(--txt);margin:0}
+
+    /* Header fixe (identique au site) */
+    .site-header{position:fixed;top:0;left:0;right:0;z-index:1000;background:var(--orange);color:#fff;box-shadow:0 2px 10px rgba(0,0,0,.15)}
+    .title-row{display:flex;align-items:center;justify-content:center;gap:16px;padding:16px 12px 6px}
+    .branch{width:120px;height:auto;opacity:.95;filter:drop-shadow(0 2px 2px rgba(0,0,0,.12))}
+    .branch.mirror{transform:scaleX(-1)}
+    h1.site-title{margin:0;font-size:clamp(1.6rem,2.8vw,2.3rem)}
+    .nav{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;background:rgba(255,255,255,.12);padding:8px 12px 12px;border-top:1px solid rgba(255,255,255,.12)}
+    .nav a{color:#fff;text-decoration:none;padding:8px 12px;border-radius:8px;font-weight:600}
+    .nav a:hover{background:rgba(255,255,255,.18)}
+    .page-offset{height:calc(var(--hdrH) + 18px)}
+
+    main{max-width:900px;margin:auto;padding:2rem 1.25rem}
+    .intro{max-width:800px;margin:0 auto 1.2rem;text-align:center}
+    .intro p{margin:.4rem auto;line-height:1.6;color:#333}
+
+    .card{max-width:780px;margin:1rem auto;background:var(--card);padding:1.6rem;border-radius:10px;box-shadow:var(--shadow)}
+    .question-block{display:none;transition:transform .5s ease,opacity .3s ease}
+    .question-block.show{display:block;opacity:1;transform:translateX(0)}
+    .question-block.exit{transform:translateX(200%);opacity:0}
+    .q-head{font-weight:700;margin:0 0 .8rem}
+    label{display:block;margin:.45rem 0;line-height:1.5}
+    .progress{max-width:780px;margin:0 auto;color:#666;text-align:center;font-size:.95rem}
+
+    .btn{padding:.9rem 1.2rem;border:none;border-radius:8px;font-weight:700;cursor:pointer;display:inline-block}
+    .btn-orange{background:var(--orange);color:#fff}
+    .btn-disabled{background:#ccc;color:#666;cursor:not-allowed}
+    .actions{text-align:center;margin-top:1.2rem}
+  </style>
+</head>
+<body>
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="title-row">
+      <img class="branch" src="branche.png" alt="Branche d’olivier">
+      <h1 class="site-title">Révélez votre potentiel</h1>
+      <img class="branch mirror" src="branche.png" alt="Branche d’olivier en miroir">
+    </div>
+    <nav class="nav" aria-label="Navigation principale">
+      <a href="index.html">Accueil</a>
+      <a href="test.html">Test gratuit</a>
+      <a href="prestations.html">Prestations</a>
+      <a href="exemples.html">Exemples</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
+  <div class="page-offset" aria-hidden="true"></div>
+
+  <main>
+    <section class="intro card">
+      <h2 style="margin:.2rem 0">Évaluation DISC</h2>
+      <p><strong>Durée estimée :</strong> 8–12 minutes. Choisissez spontanément l’option qui vous ressemble le plus.</p>
+      <p>Vos réponses restent confidentielles. À la fin, cliquez sur <em>Continuer</em> pour passer aux <strong>Valeurs &amp; Motivations</strong>.</p>
+    </section>
+
+    <section id="bloc-question" class="card">
+      <p id="q-head" class="q-head"></p>
+      <div id="q-answers"></div>
+    </section>
+
+    <div class="progress">
+      <span id="progressText">Question 1 / 50</span>
+    </div>
+
+    <div class="actions">
+      <button id="nextBtn" class="btn btn-disabled" disabled>Question suivante</button>
+      <button id="finishBtn" class="btn btn-disabled" disabled>Continuer vers “Valeurs”</button>
+    </div>
+  </main>
+
+  <script>
+    // 50 QUESTIONS (chaque réponse est mappée vers D/I/S/C)
+    // Format: { q: "texte question", a: [ {t:"réponse", s:"D|I|S|C"}, ... ] }
+    const questions = [
+      { q:"Quand un nouveau projet démarre au travail, vous avez tendance à…",
+        a:[
+          {t:"Prendre la tête et fixer le cap", s:"D"},
+          {t:"Fédérer l’équipe avec enthousiasme", s:"I"},
+          {t:"Installer un rythme stable et rassurant", s:"S"},
+          {t:"Clarifier les règles et la méthode", s:"C"},
+        ]},
+      { q:"Dans un magasin bondé, vous…",
+        a:[
+          {t:"Allez droit au but pour gagner du temps", s:"D"},
+          {t:"Échangez volontiers avec le vendeur", s:"I"},
+          {t:"Patientez calmement, sans stress", s:"S"},
+          {t:"Comparez les informations avant de choisir", s:"C"},
+        ]},
+      { q:"Face à une échéance serrée, vous…",
+        a:[
+          {t:"Décidez vite et tranchez les priorités", s:"D"},
+          {t:"Motivez les autres pour accélérer", s:"I"},
+          {t:"Gardez votre calme pour rester efficace", s:"S"},
+          {t:"Structurez un plan détaillé", s:"C"},
+        ]},
+      { q:"En réunion, on vous reconnaît surtout pour…",
+        a:[
+          {t:"Votre franc-parler et votre sens du résultat", s:"D"},
+          {t:"Votre énergie communicative", s:"I"},
+          {t:"Votre écoute et votre esprit d’équipe", s:"S"},
+          {t:"Votre rigueur et vos analyses", s:"C"},
+        ]},
+      { q:"Devant un choix important, vous préférez…",
+        a:[
+          {t:"Décider rapidement", s:"D"},
+          {t:"Échanger avec des personnes de confiance", s:"I"},
+          {t:"Prendre le temps de la réflexion", s:"S"},
+          {t:"Peser méthodiquement le pour et le contre", s:"C"},
+        ]},
+      { q:"Si un train est en retard, vous…",
+        a:[
+          {t:"Cherchez tout de suite un plan B", s:"D"},
+          {t:"Gardez le sourire et relativisez", s:"I"},
+          {t:"Rassurez les autres et attendez sereinement", s:"S"},
+          {t:"Consultez les infos officielles et étudiez les options", s:"C"},
+        ]},
+      { q:"Quand on vous contredit, vous…",
+        a:[
+          {t:"Soutenez fermement votre position", s:"D"},
+          {t:"Cherchez un terrain d’entente", s:"I"},
+          {t:"Restez posé(e) pour éviter l’escalade", s:"S"},
+          {t:"Demandez des preuves ou des données", s:"C"},
+        ]},
+      { q:"Dans un groupe, vous aimez…",
+        a:[
+          {t:"Relever des défis", s:"D"},
+          {t:"Créer de la convivialité", s:"I"},
+          {t:"Assurer une bonne entente", s:"S"},
+          {t:"Apporter précision et méthode", s:"C"},
+        ]},
+      { q:"Devant une consigne floue, vous…",
+        a:[
+          {t:"Agissez et ajustez en route", s:"D"},
+          {t:"Clarifiez à l’oral avec les autres", s:"I"},
+          {t:"Cherchez un cadre rassurant", s:"S"},
+          {t:"Demandez un document précis", s:"C"},
+        ]},
+      { q:"Quand vous présentez une idée, vous…",
+        a:[
+          {t:"Allez à l’essentiel, sans détour", s:"D"},
+          {t:"Donnez envie avec une histoire", s:"I"},
+          {t:"Adaptez votre ton pour respecter chacun", s:"S"},
+          {t:"Appuyez-vous sur des faits et chiffres", s:"C"},
+        ]},
+      { q:"En cas de désaccord dans l’équipe, vous…",
+        a:[
+          {t:"Tranchez pour avancer", s:"D"},
+          {t:"Créez un dialogue constructif", s:"I"},
+          {t:"Facilitez un compromis apaisé", s:"S"},
+          {t:"Revenez aux critères objectifs", s:"C"},
+        ]},
+      { q:"Face à un imprévu personnel, vous…",
+        a:[
+          {t:"Réagissez vite", s:"D"},
+          {t:"Gardez l’esprit positif", s:"I"},
+          {t:"Restez calme et prudent(e)", s:"S"},
+          {t:"Analysez avant d’agir", s:"C"},
+        ]},
+      { q:"Si un collègue est en difficulté, vous…",
+        a:[
+          {t:"Fixez un plan d’action court", s:"D"},
+          {t:"Le motivez et l’encouragez", s:"I"},
+          {t:"L’écoutez et l’épauler", s:"S"},
+          {t:"L’aidez à structurer sa méthode", s:"C"},
+        ]},
+      { q:"Dans vos e-mails, vous êtes plutôt…",
+        a:[
+          {t:"Direct(-e) et concis(-e)", s:"D"},
+          {t:"Chaleureux(se) et engageant(e)", s:"I"},
+          {t:"Courtois(e) et rassurant(e)", s:"S"},
+          {t:"Précis(e) et détaillé(e)", s:"C"},
+        ]},
+      { q:"Au démarrage d’un poste, vous…",
+        a:[
+          {t:"Fixez rapidement des objectifs ambitieux", s:"D"},
+          {t:"Rencontrez un maximum de personnes", s:"I"},
+          {t:"Observez et prenez vos marques", s:"S"},
+          {t:"Étudiez procédures et outils", s:"C"},
+        ]},
+      { q:"Lors d’un achat important, vous…",
+        a:[
+          {t:"Décidez vite si le besoin est clair", s:"D"},
+          {t:"Écoutez l’avis de proches", s:"I"},
+          {t:"Prenez le temps de la réflexion", s:"S"},
+          {t:"Comparez minutieusement", s:"C"},
+        ]},
+      { q:"Dans un pitch de 2 minutes, vous…",
+        a:[
+          {t:"Allez droit au but avec impact", s:"D"},
+          {t:"Captez l’attention par le récit", s:"I"},
+          {t:"Restez clair et posé", s:"S"},
+          {t:"Structurez en points clés chiffrés", s:"C"},
+        ]},
+      { q:"Si on change le plan au dernier moment, vous…",
+        a:[
+          {t:"Prenez la main et réarrangez", s:"D"},
+          {t:"Ralliez tout le monde avec optimisme", s:"I"},
+          {t:"Gardez le cap en douceur", s:"S"},
+          {t:"Revalidez les impacts et contraintes", s:"C"},
+        ]},
+      { q:"Quand vous déléguez, vous…",
+        a:[
+          {t:"Fixez le résultat attendu", s:"D"},
+          {t:"Encouragez et donnez confiance", s:"I"},
+          {t:"Restez disponible et bienveillant", s:"S"},
+          {t:"Donnez un cadre précis", s:"C"},
+        ]},
+      { q:"Face à une critique, vous…",
+        a:[
+          {t:"Répondez fermement", s:"D"},
+          {t:"Désamorcez avec humour", s:"I"},
+          {t:"Écoutez et remerciez pour le retour", s:"S"},
+          {t:"Analysez les faits objectivement", s:"C"},
+        ]},
+      { q:"Votre rythme naturel est plutôt…",
+        a:[
+          {t:"Rapide et orienté action", s:"D"},
+          {t:"Dynamique et relationnel", s:"I"},
+          {t:"Posé et constant", s:"S"},
+          {t:"Mesuré et méthodique", s:"C"},
+        ]},
+      { q:"Quand on vous confie un budget, vous…",
+        a:[
+          {t:"Visez le ROI et les jalons clés", s:"D"},
+          {t:"Ralliez les parties prenantes", s:"I"},
+          {t:"Assurez la stabilité du suivi", s:"S"},
+          {t:"Contrôlez et tracez précisément", s:"C"},
+        ]},
+      { q:"Si quelqu’un monopolise la parole, vous…",
+        a:[
+          {t:"Recadrez pour avancer", s:"D"},
+          {t:"Relancez de façon conviviale", s:"I"},
+          {t:"Attendez votre moment calmement", s:"S"},
+          {t:"Revenez à l’ordre du jour", s:"C"},
+        ]},
+      { q:"Dans une négociation, vous…",
+        a:[
+          {t:"Cherchez une victoire rapide", s:"D"},
+          {t:"Créez une relation fluide", s:"I"},
+          {t:"Visez un accord serein", s:"S"},
+          {t:"Vous basez sur des critères objectifs", s:"C"},
+        ]},
+      { q:"Sous pression, vous avez tendance à…",
+        a:[
+          {t:"Accélérer et décider seul(e)", s:"D"},
+          {t:"Parler davantage et convaincre", s:"I"},
+          {t:"Rester calme et fiable", s:"S"},
+          {t:"Contrôler encore plus les détails", s:"C"},
+        ]},
+      { q:"Quand vous apprenez un nouvel outil, vous…",
+        a:[
+          {t:"Testez directement", s:"D"},
+          {t:"Demandez une démo conviviale", s:"I"},
+          {t:"Progressez étape par étape", s:"S"},
+          {t:"Lisez la documentation", s:"C"},
+        ]},
+      { q:"Si l’on vous confie une équipe hétérogène, vous…",
+        a:[
+          {t:"Fixez très vite des objectifs clairs", s:"D"},
+          {t:"Créez de la cohésion", s:"I"},
+          {t:"Stabilisez les rôles", s:"S"},
+          {t:"Définissez processus et indicateurs", s:"C"},
+        ]},
+      { q:"Dans une file d’attente, vous…",
+        a:[
+          {t:"Cherchez une alternative immédiate", s:"D"},
+          {t:"Discutez avec les gens autour", s:"I"},
+          {t:"Patientez tranquillement", s:"S"},
+          {t:"Optimisez le temps (lecture, notes…)", s:"C"},
+        ]},
+      { q:"Si un proche vous demande conseil, vous…",
+        a:[
+          {t:"Dites franchement ce que vous feriez", s:"D"},
+          {t:"L’encouragez et valorisez ses forces", s:"I"},
+          {t:"Écoutez longuement avant de répondre", s:"S"},
+          {t:"Listez options et conséquences", s:"C"},
+        ]},
+      { q:"Dans une présentation, vous soignez surtout…",
+        a:[
+          {t:"Le message d’impact", s:"D"},
+          {t:"La connexion avec l’auditoire", s:"I"},
+          {t:"La clarté et la sérénité", s:"S"},
+          {t:"La logique et la précision", s:"C"},
+        ]},
+      { q:"Si un collaborateur est en retard récurrent, vous…",
+        a:[
+          {t:"Recadrez et fixez une règle", s:"D"},
+          {t:"Cherchez la cause et remotivez", s:"I"},
+          {t:"Proposez un aménagement calmement", s:"S"},
+          {t:"Rappelez la procédure et mesurez", s:"C"},
+        ]},
+      { q:"Votre manière de planifier est plutôt…",
+        a:[
+          {t:"Objectifs, jalons, résultats", s:"D"},
+          {t:"Réseau, interactions, timing", s:"I"},
+          {t:"Routine, régularité, marges", s:"S"},
+          {t:"Checklists, standards, preuves", s:"C"},
+        ]},
+      { q:"Quand on vous confie une tâche ambiguë, vous…",
+        a:[
+          {t:"Prenez l’initiative et clarifiez en avançant", s:"D"},
+          {t:"Sondez les parties prenantes", s:"I"},
+          {t:"Stabilisez le contexte d’abord", s:"S"},
+          {t:"Demandez un cahier des charges", s:"C"},
+        ]},
+      { q:"Dans un conflit, vous…",
+        a:[
+          {t:"Affirmez votre position", s:"D"},
+          {t:"Désamorcez par la communication", s:"I"},
+          {t:"Favorisez l’apaisement", s:"S"},
+          {t:"Revenez aux faits", s:"C"},
+        ]},
+      { q:"Quand vous démarrez la journée, vous…",
+        a:[
+          {t:"Attaquez la tâche prioritaire", s:"D"},
+          {t:"Faites un tour d’horizon relationnel", s:"I"},
+          {t:"Organisez calmement votre to-do", s:"S"},
+          {t:"Vérifiez votre plan détaillé", s:"C"},
+        ]},
+      { q:"Si on vous propose un challenge ambitieux, vous…",
+        a:[
+          {t:"Dites oui et foncez", s:"D"},
+          {t:"Imaginez qui embarquer", s:"I"},
+          {t:"Évaluez l’impact sur votre équilibre", s:"S"},
+          {t:"Demandez le périmètre exact", s:"C"},
+        ]},
+      { q:"Avec un client mécontent, vous…",
+        a:[
+          {t:"Proposez une solution ferme et rapide", s:"D"},
+          {t:"Désamorcez avec empathie", s:"I"},
+          {t:"Restez calme et sécurisant", s:"S"},
+          {t:"Analysez précisément le problème", s:"C"},
+        ]},
+      { q:"Votre façon de vous motiver, c’est…",
+        a:[
+          {t:"Le défi et la réussite", s:"D"},
+          {t:"Le partage et la reconnaissance", s:"I"},
+          {t:"La stabilité et l’utilité", s:"S"},
+          {t:"La qualité et la maîtrise", s:"C"},
+        ]},
+      { q:"Si on change un outil sans prévenir, vous…",
+        a:[
+          {t:"Passer en mode solution", s:"D"},
+          {t:"Rallier les collègues", s:"I"},
+          {t:"Chercher vos repères", s:"S"},
+          {t:"Lire le guide et comparer", s:"C"},
+        ]},
+      { q:"Dans un déjeuner pro, vous…",
+        a:[
+          {t:"Allez vite sur l’objectif", s:"D"},
+          {t:"Créez un lien chaleureux", s:"I"},
+          {t:"Installez une ambiance posée", s:"S"},
+          {t:"Validez les éléments concrets", s:"C"},
+        ]},
+      { q:"Quand vous formez quelqu’un, vous…",
+        a:[
+          {t:"Fixez les attendus et contrôlez", s:"D"},
+          {t:"Encouragez et valorisez", s:"I"},
+          {t:"Accompagnez pas à pas", s:"S"},
+          {t:"Fournissez modes opératoires", s:"C"},
+        ]},
+      { q:"Votre rapport au risque est plutôt…",
+        a:[
+          {t:"Assumé si le gain est clair", s:"D"},
+          {t:"Calculé, avec soutien social", s:"I"},
+          {t:"Modéré, pour rester serein", s:"S"},
+          {t:"Réduit, une fois tout vérifié", s:"C"},
+        ]},
+      { q:"Si un ami change les plans à la dernière minute, vous…",
+        a:[
+          {t:"Redéfinissez vite le nouveau plan", s:"D"},
+          {t:"Gardez la bonne humeur", s:"I"},
+          {t:"Préservez l’équilibre de chacun", s:"S"},
+          {t:"Évaluez logistique et contraintes", s:"C"},
+        ]},
+      { q:"Pour clôturer un projet, vous…",
+        a:[
+          {t:"Célébrez le résultat et passez au suivant", s:"D"},
+          {t:"Remerciez l’équipe et partagez", s:"I"},
+          {t:"Tirez des enseignements sereinement", s:"S"},
+          {t:"Documentez données et process", s:"C"},
+        ]},
+      { q:"Si vous devez refuser, vous…",
+        a:[
+          {t:"Dites non clairement", s:"D"},
+          {t:"Expliquez avec tact", s:"I"},
+          {t:"Proposez une alternative douce", s:"S"},
+          {t:"Expliquez objectivement", s:"C"},
+        ]},
+      { q:"Votre environnement idéal, c’est…",
+        a:[
+          {t:"Challenge et autonomie", s:"D"},
+          {t:"Interaction, échanges et créativité", s:"I"},
+          {t:"Stabilité et coopération", s:"S"},
+          {t:"Structure et précision", s:"C"},
+        ]},
+      { q:"Quand vous préparez un oral, vous…",
+        a:[
+          {t:"Travaillez l’impact et le message", s:"D"},
+          {t:"Soignez l’énergie et le lien", s:"I"},
+          {t:"Répétez pour être à l’aise", s:"S"},
+          {t:"Structurez et appuyez par des données", s:"C"},
+        ]},
+      { q:"Si l’on vous donne un feedback, vous…",
+        a:[
+          {t:"Passez vite à l’action", s:"D"},
+          {t:"Échangez pour bien comprendre", s:"I"},
+          {t:"Accueillez posément", s:"S"},
+          {t:"Analysez point par point", s:"C"},
+        ]},
+      { q:"Ce qui vous agace le plus, c’est…",
+        a:[
+          {t:"La lenteur et l’inefficacité", s:"D"},
+          {t:"La froideur ou l’isolement", s:"I"},
+          {t:"Les conflits et tensions", s:"S"},
+          {t:"Le flou et l’approximation", s:"C"},
+        ]},
+      { q:"Quand vous fixez un objectif perso, vous…",
+        a:[
+          {t:"Visez haut et vite", s:"D"},
+          {t:"Partagez pour vous engager", s:"I"},
+          {t:"Installez une routine sereine", s:"S"},
+          {t:"Mesurez et suivez précisément", s:"C"},
+        ]},
+      { q:"Dans un projet transverse, vous…",
+        a:[
+          {t:"Poussez pour livrer à l’heure", s:"D"},
+          {t:"Faites circuler l’info", s:"I"},
+          {t:"Rassurez et régulez", s:"S"},
+          {t:"Standardisez et organisez", s:"C"},
+        ]},
+      { q:"Et, au quotidien, on dirait de vous surtout que vous êtes…",
+        a:[
+          {t:"Direct(-e) et orienté(-e) résultat", s:"D"},
+          {t:"Chaleureux(se) et entraînant(e)", s:"I"},
+          {t:"Calme et fiable", s:"S"},
+          {t:"Organisé(-e) et précis(-e)", s:"C"},
+        ]},
+    ];
+
+    let index = 0;
+    const scores = {D:0,I:0,S:0,C:0};
+    const qHead = document.getElementById('q-head');
+    const qAns  = document.getElementById('q-answers');
+    const nextBtn = document.getElementById('nextBtn');
+    const finishBtn = document.getElementById('finishBtn');
+    const progressText = document.getElementById('progressText');
+
+    // Shuffle (Fisher-Yates) — pour mélanger l’ordre des réponses
+    function shuffle(arr){
+      const a = arr.slice();
+      for(let i=a.length-1;i>0;i--){
+        const j = Math.floor(Math.random()*(i+1));
+        [a[i],a[j]] = [a[j],a[i]];
+      }
+      return a;
+    }
+
+    function renderQuestion(i){
+      const q = questions[i];
+      qHead.textContent = `${i+1}. ${q.q}`;
+
+      // Mélange l’ordre des 4 propositions à chaque affichage
+      const shuffledAnswers = shuffle(q.a);
+
+      qAns.innerHTML = "";
+      shuffledAnswers.forEach((opt, idx)=>{
+        const id = `q${i}_a${idx}`;
+        const lab = document.createElement('label');
+        lab.innerHTML = `<input type="radio" name="q${i}" value="${opt.s}" id="${id}"> ${opt.t}`;
+        qAns.appendChild(lab);
+      });
+
+      nextBtn.disabled = true;
+      nextBtn.classList.add('btn-disabled'); nextBtn.classList.remove('btn-orange');
+
+      // écoute choix
+      qAns.querySelectorAll('input[type=radio]').forEach(r=>{
+        r.addEventListener('change', ()=>{
+          nextBtn.disabled = false;
+          nextBtn.classList.remove('btn-disabled'); nextBtn.classList.add('btn-orange');
+        });
+      });
+
+      progressText.textContent = `Question ${i+1} / ${questions.length}`;
+      finishBtn.disabled = true;
+      finishBtn.classList.add('btn-disabled'); finishBtn.classList.remove('btn-orange');
+    }
+
+    function next(){
+      const checked = qAns.querySelector('input[type=radio]:checked');
+      if(!checked) return;
+      scores[checked.value]++;
+
+      index++;
+      if(index < questions.length){
+        renderQuestion(index);
+      }else{
+        // Fin questionnaire
+        nextBtn.disabled = true;
+        nextBtn.classList.add('btn-disabled'); nextBtn.classList.remove('btn-orange');
+        finishBtn.disabled = false;
+        finishBtn.classList.remove('btn-disabled'); finishBtn.classList.add('btn-orange');
+
+        // Résumé stocké localement pour valeurs.html
+        const classes = Object.entries(scores).sort((a,b)=>b[1]-a[1]); // tri desc
+        let top = classes.filter(x=>x[1]===classes[0][1]).map(x=>x[0]).slice(0,2).join('');
+        const payload = { scores, dominant: top || '', total: questions.length, finishedAt: new Date().toISOString() };
+        localStorage.setItem('disc_result', JSON.stringify(payload));
+      }
+    }
+
+    nextBtn.addEventListener('click', next);
+    finishBtn.addEventListener('click', ()=>{
+      window.location.href = 'valeurs.html';
+    });
+
+    // Démarrage
+    renderQuestion(index);
+  </script>
+</body>
+</html>
