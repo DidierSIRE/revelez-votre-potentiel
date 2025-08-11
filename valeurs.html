@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Valeurs & Motivations – Évaluation complète</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root{
+      --orange:#FFA726; --vert:#2E7D32; --fond:#f7f9fa; --txt:#222; --card:#fff;
+      --shadow:0 2px 10px rgba(0,0,0,.1); --hdrH:120px;
+    }
+    *{box-sizing:border-box}
+    body{font-family:'Segoe UI',sans-serif;background:var(--fond);color:var(--txt);margin:0}
+
+    /* Header fixe (identique au site) */
+    .site-header{position:fixed;top:0;left:0;right:0;z-index:1000;background:var(--orange);color:#fff;box-shadow:0 2px 10px rgba(0,0,0,.15)}
+    .title-row{display:flex;align-items:center;justify-content:center;gap:16px;padding:16px 12px 6px}
+    .branch{width:120px;height:auto;opacity:.95;filter:drop-shadow(0 2px 2px rgba(0,0,0,.12))}
+    .branch.mirror{transform:scaleX(-1)}
+    h1.site-title{margin:0;font-size:clamp(1.6rem,2.8vw,2.3rem)}
+    .nav{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;background:rgba(255,255,255,.12);padding:8px 12px 12px;border-top:1px solid rgba(255,255,255,.12)}
+    .nav a{color:#fff;text-decoration:none;padding:8px 12px;border-radius:8px;font-weight:600}
+    .nav a:hover{background:rgba(255,255,255,.18)}
+    .page-offset{height:calc(var(--hdrH) + 18px)}
+
+    main{max-width:900px;margin:auto;padding:2rem 1.25rem 2.5rem}
+    .intro{max-width:820px;margin:0 auto 1.2rem;text-align:center}
+    .intro p{margin:.4rem auto;line-height:1.6;color:#333}
+
+    .card{max-width:820px;margin:1rem auto;background:var(--card);padding:1.4rem 1.2rem;border-radius:10px;box-shadow:var(--shadow)}
+    .q-title{font-weight:700;margin:.2rem 0 1rem}
+    .grid{display:grid;grid-template-columns:1fr 120px 120px;gap:.6rem .8rem;align-items:center}
+    .hdr{font-size:.9rem;color:#555}
+    .opt{line-height:1.5}
+    .center{text-align:center}
+    .muted{color:#666}
+    .progress{max-width:820px;margin:.4rem auto;color:#666;text-align:center;font-size:.95rem}
+
+    .btn{padding:.9rem 1.2rem;border:none;border-radius:8px;font-weight:700;cursor:pointer;display:inline-block}
+    .btn-orange{background:var(--orange);color:#fff}
+    .btn-disabled{background:#ccc;color:#666;cursor:not-allowed}
+    .actions{text-align:center;margin-top:1.2rem}
+
+    /* Pages (états) */
+    .page{display:none}
+    .page.active{display:block}
+  </style>
+</head>
+<body>
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="title-row">
+      <img class="branch" src="branche.png" alt="Branche d’olivier">
+      <h1 class="site-title">Révélez votre potentiel</h1>
+      <img class="branch mirror" src="branche.png" alt="Branche d’olivier en miroir">
+    </div>
+    <nav class="nav" aria-label="Navigation principale">
+      <a href="index.html">Accueil</a>
+      <a href="test.html">Test gratuit</a>
+      <a href="prestations.html">Prestations</a>
+      <a href="exemples.html">Exemples</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
+  <div class="page-offset" aria-hidden="true"></div>
+
+  <main>
+    <!-- INTRO -->
+    <section id="page-intro" class="page active card">
+      <h2 style="margin:.2rem 0">Valeurs &amp; Motivations</h2>
+      <div class="intro">
+        <p><strong>Durée estimée :</strong> 10–15 minutes. Pour chaque item, choisissez :</p>
+        <p>• l’affirmation qui vous ressemble le <strong>PLUS</strong> &nbsp;•&nbsp; celle qui vous ressemble le <strong>MOINS</strong>.<br>
+        Répondez spontanément — il n’y a pas de “bonne” réponse.</p>
+        <p class="muted"><small>Objectif : déterminer ce qui fait sens pour vous.</small></p>
+      </div>
+      <div class="actions">
+        <button id="startBtn" class="btn btn-orange">Commencer</button>
+      </div>
+    </section>
+
+    <!-- QUESTION -->
+    <section id="page-question" class="page card">
+      <p id="qTitle" class="q-title"></p>
+      <div class="grid">
+        <div></div>
+        <div class="hdr center">PLUS</div>
+        <div class="hdr center">MOINS</div>
+
+        <div class="opt" id="opt0"></div>
+        <div class="center"><input type="radio" name="plus" id="p0" value=""></div>
+        <div class="center"><input type="radio" name="moins" id="m0" value=""></div>
+
+        <div class="opt" id="opt1"></div>
+        <div class="center"><input type="radio" name="plus" id="p1" value=""></div>
+        <div class="center"><input type="radio" name="moins" id="m1" value=""></div>
+
+        <div class="opt" id="opt2"></div>
+        <div class="center"><input type="radio" name="plus" id="p2" value=""></div>
+        <div class="center"><input type="radio" name="moins" id="m2" value=""></div>
+      </div>
+
+      <div class="progress"><span id="progressText">Item 1 / 30</span></div>
+      <div class="actions">
+        <button id="nextBtn" class="btn btn-disabled" disabled>Item suivant</button>
+      </div>
+    </section>
+
+    <!-- FIN (pas d’affichage des résultats) -->
+    <section id="page-fin" class="page card" style="text-align:center">
+      <h3>Merci, c’est terminé ✅</h3>
+      <p class="muted" style="max-width:700px;margin:0 auto 1rem;line-height:1.6">
+        Nous avons bien enregistré vos réponses. Votre <strong>rapport complet</strong> sera préparé sous 24&nbsp;h, en croisant les résultats de
+        votre évaluation <strong>DISC</strong> et de vos <strong>Valeurs &amp; Motivations</strong>. Vous le recevrez directement par e-mail.
+      </p>
+      <div class="actions" style="margin-top:.8rem">
+        <button class="btn btn-orange" onclick="window.location.href='index.html'">Retour à l’accueil</button>
+        <a class="btn" style="margin-left:.5rem;border:1px solid #ddd" href="https://calendly.com/revelezvostalents/30min" target="_blank" rel="noopener">Réserver un échange</a>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Codes & libellés
+    const labels = {
+      T: "Connaissance",
+      U: "Utilité",
+      A: "Harmonie",
+      S: "Altruisme",
+      P: "Influence",
+      R: "Tradition"
+    };
+
+    // 30 items (3 propositions chacun) — répartition équilibrée
+    const items = [
+      { q:"Quand je choisis un projet qui m’enthousiasme, j’y vois surtout…",
+        opts:[ {t:"La possibilité d’apprendre et de comprendre en profondeur.", v:"T"},
+               {t:"Un résultat utile, concret, qui apporte un vrai gain.", v:"U"},
+               {t:"Une occasion de créer quelque chose d’harmonieux et soigné.", v:"A"} ]},
+      { q:"Dans une équipe, j’apporte naturellement…",
+        opts:[ {t:"Du soutien, de l’attention aux personnes et à leurs besoins.", v:"S"},
+               {t:"De l’impulsion, une capacité à entraîner et à influencer.", v:"P"},
+               {t:"Un cadre clair, des repères et une constance rassurante.", v:"R"} ]},
+      { q:"Devant un problème complexe, je privilégie…",
+        opts:[ {t:"L’analyse rigoureuse et la recherche d’explications solides.", v:"T"},
+               {t:"La solution la plus efficace au regard du temps et du coût.", v:"U"},
+               {t:"La voie qui respecte l’équilibre et l’esthétique du résultat.", v:"A"} ]},
+      { q:"Ce qui me motive à long terme…",
+        opts:[ {t:"Contribuer positivement au bien-être des autres.", v:"S"},
+               {t:"Avoir un vrai pouvoir d’action et de décision.", v:"P"},
+               {t:"M’inscrire dans des valeurs et repères stables.", v:"R"} ]},
+      { q:"Quand j’assiste à une présentation, j’apprécie surtout…",
+        opts:[ {t:"La clarté du raisonnement et la qualité des informations.", v:"T"},
+               {t:"L’utilité concrète et les applications pratiques.", v:"U"},
+               {t:"La beauté du support et l’harmonie générale.", v:"A"} ]},
+      { q:"Dans une association ou un collectif, je me sens à ma place quand…",
+        opts:[ {t:"Je peux aider, écouter, prendre soin des personnes.", v:"S"},
+               {t:"Je peux piloter, orienter, représenter le groupe.", v:"P"},
+               {t:"Les principes et traditions du groupe sont respectés.", v:"R"} ]},
+      { q:"Pour choisir un livre, un film, une exposition…",
+        opts:[ {t:"Je suis attiré par la profondeur intellectuelle.", v:"T"},
+               {t:"Je cherche ce qui m’apportera une utilité ou un gain concret.", v:"U"},
+               {t:"Je privilégie l’émotion esthétique et l’expérience sensible.", v:"A"} ]},
+      { q:"Au travail, je me sens le plus utile quand…",
+        opts:[ {t:"J’améliore la vie et la coopération des personnes.", v:"S"},
+               {t:"J’impacte la direction et les résultats d’un projet.", v:"P"},
+               {t:"Je veille à la cohérence et au respect d’un cadre commun.", v:"R"} ]},
+      { q:"Quand j’investis du temps/argent, je vise…",
+        opts:[ {t:"Un enrichissement intellectuel durable.", v:"T"},
+               {t:"Un ROI clair et mesurable.", v:"U"},
+               {t:"Une expérience inspirante et harmonieuse.", v:"A"} ]},
+      { q:"Dans les débats de société, j’accorde du poids…",
+        opts:[ {t:"À la protection des personnes et du lien social.", v:"S"},
+               {t:"À l’efficacité des décisions et au leadership.", v:"P"},
+               {t:"Aux repères culturels, symboles et traditions.", v:"R"} ]},
+      { q:"Si je devais décrire mon style, je dirais…",
+        opts:[ {t:"Curieux, analytique, en quête de sens.", v:"T"},
+               {t:"Pragmatique, orienté résultat.", v:"U"},
+               {t:"Sensible au beau, au détail et à l’harmonie.", v:"A"} ]},
+      { q:"Ce qui m’importe le plus dans un collectif…",
+        opts:[ {t:"La dignité et la solidarité entre les personnes.", v:"S"},
+               {t:"La capacité à décider et à avancer.", v:"P"},
+               {t:"Le respect d’un cadre partagé et de règles claires.", v:"R"} ]},
+      { q:"Dans un nouveau rôle, je recherche d’abord…",
+        opts:[ {t:"Des défis intellectuels et de la progression mentale.", v:"T"},
+               {t:"De l’impact tangible et des gains mesurables.", v:"U"},
+               {t:"Une esthétique soignée et une harmonie d’ensemble.", v:"A"} ]},
+      { q:"Quand je conseille quelqu’un, j’apporte surtout…",
+        opts:[ {t:"De l’écoute et de la considération.", v:"S"},
+               {t:"Un cap, des décisions et de l’entrain.", v:"P"},
+               {t:"Des repères stables, des valeurs claires.", v:"R"} ]},
+      { q:"Face à une réussite, ce que j’apprécie le plus…",
+        opts:[ {t:"Comprendre ce qui l’a rendue possible.", v:"T"},
+               {t:"Constater l’utilité concrète que ça apporte.", v:"U"},
+               {t:"Ressentir la beauté/le “juste” du résultat.", v:"A"} ]},
+      { q:"Si je devais choisir une mission bénévole, je viserais…",
+        opts:[ {t:"Aider directement des personnes.", v:"S"},
+               {t:"Animer, représenter, porter des décisions.", v:"P"},
+               {t:"Préserver/valoriser un héritage commun.", v:"R"} ]},
+      { q:"En cas de conflit de priorités, je tranche plutôt selon…",
+        opts:[ {t:"La logique, les faits et la compréhension.", v:"T"},
+               {t:"Le gain/efficacité pour l’objectif visé.", v:"U"},
+               {t:"L’équilibre des personnes et du cadre.", v:"A"} ]},
+      { q:"Dans un environnement incertain, je m’appuie sur…",
+        opts:[ {t:"Le soin apporté au lien et aux besoins humains.", v:"S"},
+               {t:"La capacité à entraîner et à arbitrer.", v:"P"},
+               {t:"Des règles stables, une continuité rassurante.", v:"R"} ]},
+      { q:"Ce qui me frustre le plus dans un projet…",
+        opts:[ {t:"Le manque de profondeur/rigueur.", v:"T"},
+               {t:"Le manque d’efficacité/retombées concrètes.", v:"U"},
+               {t:"Le manque d’harmonie/cohérence esthétique.", v:"A"} ]},
+      { q:"Dans une période de changement, j’accorde priorité…",
+        opts:[ {t:"Au soin porté aux personnes.", v:"S"},
+               {t:"À l’élan, au leadership et au cap.", v:"P"},
+               {t:"Aux repères communs et à la continuité.", v:"R"} ]},
+      { q:"Quand je célèbre une étape franchie…",
+        opts:[ {t:"Je partage ce que j’ai appris.", v:"T"},
+               {t:"Je mesure le gain obtenu.", v:"U"},
+               {t:"Je savoure la qualité/esthétique du résultat.", v:"A"} ]},
+      { q:"Ce que j’espère laisser derrière moi…",
+        opts:[ {t:"Des personnes relevées et grandies.", v:"S"},
+               {t:"Des réalisations impulsées et décisives.", v:"P"},
+               {t:"Un socle de valeurs qui perdure.", v:"R"} ]},
+      { q:"Ma manière de choisir un outil/méthode…",
+        opts:[ {t:"Ce qui éclaire et fait comprendre.", v:"T"},
+               {t:"Ce qui fait gagner du temps/argent.", v:"U"},
+               {t:"Ce qui rend l’expérience agréable/soignée.", v:"A"} ]},
+      { q:"Dans une équipe idéale, je veux surtout…",
+        opts:[ {t:"Un haut niveau de considération humaine.", v:"S"},
+               {t:"Une vraie capacité d’entraînement/décision.", v:"P"},
+               {t:"Des règles partagées et respectées.", v:"R"} ]},
+      { q:"Quand je m’engage sur un sujet, j’attends prioritairement…",
+        opts:[ {t:"D’approfondir, comprendre, clarifier.", v:"T"},
+               {t:"D’obtenir un effet concret, mesurable.", v:"U"},
+               {t:"D’atteindre une forme d’équilibre/esthétique.", v:"A"} ]},
+      { q:"Dans un conflit de valeurs, je privilégie…",
+        opts:[ {t:"Le respect et la protection des personnes.", v:"S"},
+               {t:"La décision claire et la responsabilité assumée.", v:"P"},
+               {t:"La fidélité à des repères/engagements partagés.", v:"R"} ]},
+      { q:"Pour évaluer une idée, je regarde d’abord…",
+        opts:[ {t:"La validité et la cohérence logique.", v:"T"},
+               {t:"Les bénéfices concrets et le coût d’opportunité.", v:"U"},
+               {t:"L’harmonie avec l’ensemble et l’impact sensible.", v:"A"} ]},
+      { q:"Dans l’accompagnement d’autrui, je privilégie…",
+        opts:[ {t:"L’attention aux besoins et au contexte humain.", v:"S"},
+               {t:"Le cap, la motivation et l’entrain collectif.", v:"P"},
+               {t:"Un cadre lisible, stable, rassurant.", v:"R"} ]},
+      { q:"Face à une réussite d’équipe, je valorise surtout…",
+        opts:[ {t:"Ce que nous avons compris et appris.", v:"T"},
+               {t:"Ce que cela a réellement changé ou rapporté.", v:"U"},
+               {t:"La qualité et la justesse du rendu global.", v:"A"} ]},
+      { q:"Dans la transmission, j’accorde le plus d’importance…",
+        opts:[ {t:"À l’élévation/soin des personnes.", v:"S"},
+               {t:"À la capacité à entraîner et décider.", v:"P"},
+               {t:"Aux repères et traditions qui structurent.", v:"R"} ]},
+    ];
+
+    // ÉTATS & ÉLÉMENTS
+    const pageIntro = document.getElementById('page-intro');
+    const pageQuestion = document.getElementById('page-question');
+    const pageFin = document.getElementById('page-fin');
+
+    const startBtn = document.getElementById('startBtn');
+    const qTitle = document.getElementById('qTitle');
+    const optEls = [document.getElementById('opt0'), document.getElementById('opt1'), document.getElementById('opt2')];
+    const plusRadios = [document.getElementById('p0'), document.getElementById('p1'), document.getElementById('p2')];
+    const moinsRadios = [document.getElementById('m0'), document.getElementById('m1'), document.getElementById('m2')];
+    const progressText = document.getElementById('progressText');
+    const nextBtn = document.getElementById('nextBtn');
+
+    // SCORES
+    const scores = {T:0,U:0,A:0,S:0,P:0,R:0};
+    let index = 0;
+    let currentOpts = [];
+
+    function shuffle(arr){
+      const a = arr.slice();
+      for(let i=a.length-1;i>0;i--){
+        const j = Math.floor(Math.random()*(i+1));
+        [a[i],a[j]] = [a[j],a[i]];
+      }
+      return a;
+    }
+
+    function renderItem(i){
+      const it = items[i];
+      qTitle.textContent = `Item ${i+1} / ${items.length} — ${it.q}`;
+      progressText.textContent = `Item ${i+1} / ${items.length}`;
+
+      currentOpts = shuffle(it.opts);
+
+      currentOpts.forEach((o, k)=>{
+        optEls[k].textContent = o.t;
+        plusRadios[k].checked = false; plusRadios[k].value = o.v;
+        moinsRadios[k].checked = false; moinsRadios[k].value = o.v;
+      });
+
+      nextBtn.disabled = true;
+      nextBtn.classList.add('btn-disabled'); nextBtn.classList.remove('btn-orange');
+    }
+
+    function validateReady(){
+      const plus = plusRadios.find(r=>r.checked);
+      const moins = moinsRadios.find(r=>r.checked);
+      const ok = !!plus && !!moins && plus.value !== moins.value;
+      nextBtn.disabled = !ok;
+      if(ok){ nextBtn.classList.remove('btn-disabled'); nextBtn.classList.add('btn-orange'); }
+      else { nextBtn.classList.add('btn-disabled'); nextBtn.classList.remove('btn-orange'); }
+    }
+
+    [...plusRadios, ...moinsRadios].forEach(r=>{
+      r.addEventListener('change', ()=>{
+        const plus = plusRadios.find(x=>x.checked);
+        const moins = moinsRadios.find(x=>x.checked);
+        if(plus && moins && plus.value === moins.value){
+          r.checked = false;
+        }
+        validateReady();
+      });
+    });
+
+    nextBtn.addEventListener('click', ()=>{
+      const plus = plusRadios.find(r=>r.checked).value;
+      const moins = moinsRadios.find(r=>r.checked).value;
+      scores[plus] += 1;
+      scores[moins] -= 1;
+
+      index++;
+      if(index < items.length){
+        renderItem(index);
+      }else{
+        finalize();
+      }
+    });
+
+    function finalize(){
+      // Normalisation en pourcentages (shift pour éviter négatifs)
+      const vals = Object.values(scores);
+      const minv = Math.min(...vals);
+      const shifted = Object.fromEntries(Object.entries(scores).map(([k,v])=>[k, v - minv]));
+      const total = Object.values(shifted).reduce((a,b)=>a+b,0);
+      let perc;
+      if(total === 0){
+        perc = Object.fromEntries(Object.keys(scores).map(k=>[k, Math.round(100/6)]));
+      }else{
+        perc = Object.fromEntries(Object.entries(shifted).map(([k,v])=>[k, Math.round((v/total)*100)]));
+      }
+
+      // Tri décroissant (utile côté serveur, pas affiché)
+      const ordered = Object.entries(perc)
+        .sort((a,b)=>b[1]-a[1])
+        .map(([k,v])=>({code:k,label:labels[k],pct:v}));
+
+      // Stockage pour pipeline rapport (pas d’affichage)
+      const payload = {
+        raw: scores,
+        percent: Object.fromEntries(ordered.map(x=>[x.code,x.pct])),
+        order: ordered.map(x=>x.code),
+        finishedAt: new Date().toISOString(),
+        labels
+      };
+      localStorage.setItem('values_result', JSON.stringify(payload));
+
+      // Basculer sur la page de fin (remerciement, pas de résultats visibles)
+      pageQuestion.classList.remove('active');
+      pageFin.classList.add('active');
+      window.scrollTo(0,0);
+    }
+
+    // Démarrage
+    document.getElementById('startBtn').addEventListener('click', ()=>{
+      pageIntro.classList.remove('active');
+      pageQuestion.classList.add('active');
+      renderItem(index);
+      window.scrollTo(0,0);
+    });
+
+    // Activer / désactiver bouton “suivant”
+    function hookRadios(){
+      [...plusRadios, ...moinsRadios].forEach(r=>r.addEventListener('change', validateReady));
+    }
+    hookRadios();
+  </script>
+</body>
+</html>
